@@ -198,7 +198,7 @@ public class IntDList {
      */
     public int deleteFront() {
         // TODO: Implement this method and return correct value
-        int delated = _front._val;
+        int deleted = _front._val;
         if(_front._next == null){
             DNode empty = _front;
             _front = null;
@@ -206,7 +206,7 @@ public class IntDList {
         }
         _front = _front._next;
         _front._prev = null;
-        return delated;
+        return deleted;
 
     }
 
