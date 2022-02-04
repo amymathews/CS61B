@@ -75,6 +75,11 @@ public class CompoundInterest {
         }
 
         return total;
+        /*
+        int i =0;
+        double total = perYear;
+        while(i<
+         */
     }
 
     /** Returns totalSavings(PERYEAR, TARGETYEAR, RATE) converted to
