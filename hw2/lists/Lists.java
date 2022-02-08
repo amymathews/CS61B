@@ -29,11 +29,30 @@ class Lists {
         IntListList result = new IntListList();
         IntListList resultPointer = result;
         result.head = L;
+//        System.out.println("I am L"+ L);
+//        System.out.println(" I am the result" + result);
+//        System.out.println("I am the pointer" + resultPointer);
+//        System.out.println(" I am the head " + L.head);
+//        System.out.println("I am the tail: " + L.tail);
+//        System.out.println("I am the tail.headL " + L.tail.head);
+//        System.out.println("I am the result.head: " + result.head);
+//        System.out.println("I am the result.head.tail : " + result.head.tail);
+//        System.out.println("I am the result.head.tail.head: " + result.head.tail.head);
         while (L.tail != null) {
-            if (L.head > L.tail.head) {
+            if (L.head >= L.tail.head) {
                 // FIXME: Do something
+                IntList holder = L; // used to remember original
+                L=L.tail; // moving down the line.
+                holder.tail = null;
+                IntListList retval = new IntListList();
+                result.tail = retval;
+                result = result.tail; // moving down the line.
+                result.head = L;
+
             } else {
                 // FIXME: Do something else
+                L = L.tail; //move down the line. (not rewriting)
+
             }
         }
         return resultPointer;
@@ -50,12 +69,13 @@ class Lists {
             return null; // Should you replace me?
         } else {
             // FIXME: Add some lines here...
-            //
-            //
-            // return new IntListList(L, rest); <- You might want this return statement...
+            // <- You might want this return statement...
             //                                    but how should you define "rest"?
-            return null; // FIXME: REPLACE ME!
-        }
+            IntList end = endOfRun(L);
+            IntListList rest = naturalRuns(end);
+            //return null; // FIXME: REPLACE ME!
+            return new IntListList(L, rest);
+    }
     }
 
     /** Recursive helper method, if you'd like.

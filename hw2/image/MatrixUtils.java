@@ -3,7 +3,7 @@ package image;
 /** Provides a variety of utilities for operating on matrices.
  *  All methods assume that the double[][] arrays provided are rectangular.
  *
- *  @author Josh Hug and YOU
+ *  @author Josh Hug and Amy Mathews
  */
 
 public class MatrixUtils {
@@ -62,7 +62,7 @@ public class MatrixUtils {
                 double best = Double.POSITIVE_INFINITY;
                 for (int deltaC = -1; deltaC <= 1; deltaC += 1) {
                     if (get(m, r - 1, c + deltaC) < best) {
-                        // FIXME: Replace this line.
+                        best = get(m,r-1,c+ deltaC); // FIXME: Replace this line.
                     }
                 }
                 m[r][c] += best;
@@ -95,7 +95,23 @@ public class MatrixUtils {
      */
 
     public static double[][] accumulate(double[][] m, Orientation orientation) {
-        return null; //your code here
+        if(orientation == orientation.VERTICAL){
+            return accumulateVertical(m); // don't need the helper in this case
+        }
+        else{
+            double [][] t = transpose_helper(m);
+            t = accumulateVertical(t);
+            return transpose_helper(t);
+        }
+    }
+    public static double[][] transpose_helper(double[][] m){
+        double [][] new_matrix = new double[m[0].length][m.length];
+        for(int i =0; i<m[i].length; i += 1){
+            for(int j= 0; j<m.length; j+=1){
+            new_matrix[i][j] = m[j][i];
+          }
+        }
+        return  new_matrix;
     }
 
     /** Gets entry of M, unless R or C are out of bounds, then
