@@ -37,6 +37,9 @@ public class MatrixUtilsTest {
                 {3, 5, 5, 3},
                 {4, 4, 4, 4}};
         assertArrayEquals(result, MatrixUtils.accumulate(input, MatrixUtils.Orientation.VERTICAL));
+        double [][] input2 = {{1,0,3},{4,5,6},{7,8,9}};
+        double [][] result2 = {{1,0,3},{4,5,6},{11,12,14}};
+        assertArrayEquals(result2, MatrixUtils.accumulate(input2, MatrixUtils.Orientation.VERTICAL));
 
     }
 
