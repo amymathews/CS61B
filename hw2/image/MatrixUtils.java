@@ -96,17 +96,16 @@ public class MatrixUtils {
 
     public static double[][] accumulate(double[][] m, Orientation orientation) {
         if(orientation == orientation.VERTICAL){
-            return accumulateVertical(m); // don't need the helper in this case
+            return accumulateVertical(m); // don't need the helper in this case function is identical to
+                                            // accumulateVertical.
         }
         else{
-            double [][] t = transpose_helper(m);
-            t = accumulateVertical(t);
-            return transpose_helper(t);
+            return transpose_helper(accumulateVertical(transpose_helper(m)));
         }
     }
     public static double[][] transpose_helper(double[][] m){
         double [][] new_matrix = new double[m[0].length][m.length];
-        for(int i =0; i<m[i].length; i += 1){
+        for(int i =0; i<m[0].length; i += 1){
             for(int j= 0; j<m.length; j+=1){
             new_matrix[i][j] = m[j][i];
           }
