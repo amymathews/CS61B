@@ -87,7 +87,7 @@ public class ModelTests {
         assertTrue("pieces[0] should be placeable at (0, 0)",
                    m.placeable(pieces[0], 0, 0));
         assertFalse("pieces[0] should not be placeable at (1, 0)",
-                    m.placeable(pieces[0], 1, 0));
+                  m.placeable(pieces[0], 1, 0));
         assertTrue("pieces[0] should be placeable on m",
                    m.placeable(pieces[0]));
 

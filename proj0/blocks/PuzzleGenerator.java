@@ -1,11 +1,10 @@
 package blocks;
 
 import java.util.Random;
-
 import static blocks.Utils.*;
 
 /** A creator of random Blocks puzzles.
- *  @author
+ *  @author Amy Mathews
  */
 class PuzzleGenerator implements PuzzleSource {
 
@@ -21,7 +20,10 @@ class PuzzleGenerator implements PuzzleSource {
     public boolean deal(Model model, int handSize) {
         assert handSize > 0;
         model.clearHand();
-        // FIXME
+        for (int i = 0; i < handSize; i += 1) {
+            model.deal(PIECES[_random.nextInt(PIECES.length)]);
+
+        }
         return true;
     }
 
