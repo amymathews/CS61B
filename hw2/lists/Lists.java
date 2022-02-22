@@ -23,21 +23,10 @@ class Lists {
      *  original list pointed to by L. */
     static IntListList naturalRuns(IntList L) {
 
-        // Feel free to ignore this skeleton and start fresh
-        // if that's more your vibe
 
         IntListList result = new IntListList();
         IntListList resultPointer = result;
         result.head = L;
-//        System.out.println("I am L"+ L);
-//        System.out.println(" I am the result" + result);
-//        System.out.println("I am the pointer" + resultPointer);
-//        System.out.println(" I am the head " + L.head);
-//        System.out.println("I am the tail: " + L.tail);
-//        System.out.println("I am the tail.headL " + L.tail.head);
-//        System.out.println("I am the result.head: " + result.head);
-//        System.out.println("I am the result.head.tail : " + result.head.tail);
-//        System.out.println("I am the result.head.tail.head: " + result.head.tail.head);
         while (L.tail != null) {
             if (L.head >= L.tail.head) {
                 // FIXME: Do something

@@ -158,7 +158,7 @@ public class TestTable {
     }
 
     /**
-     * Tests for TableFilter
+     * Tests for TableFilterf
      */
 
     @Test

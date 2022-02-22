@@ -215,16 +215,37 @@ public class Table implements Iterable<Table.TableRow> {
         }
 
         @Override
+        // FIXME: Fill in the hasNext method to update the _nextRow
+        //        variable to be the next joined row to be returned
+        //        by the iterator. The rows should be returned in the
+        //        order t1[0] + t2[0], t1[0] + t2[1], t1[0] + t2[2],
+        //        ..., t1[n] + t2[m]. I.e. the first row of t1 should
+        //        be joined to all the rows of t2, then the second row
+        //        of t1 should be joined to all of the rows of t2,
+        //        etc.
         public boolean hasNext() {
             if (_nextRow == null) {
-                // FIXME: Fill in the hasNext method to update the _nextRow
-                //        variable to be the next joined row to be returned
-                //        by the iterator. The rows should be returned in the
-                //        order t1[0] + t2[0], t1[0] + t2[1], t1[0] + t2[2],
-                //        ..., t1[n] + t2[m]. I.e. the first row of t1 should
-                //        be joined to all the rows of t2, then the second row
-                //        of t1 should be joined to all of the rows of t2,
-                //        etc.
+                if(_tableIter2.hasNext()){
+                    _nextRow = TableRow.joinRows(_currRow1, _tableIter2.next());
+                }
+                else if(_tableIter1.hasNext()){
+                    _currRow1 = _tableIter1.next();
+                    _tableIter2 = _table2.iterator();
+                    _nextRow = TableRow.joinRows(_currRow1, _tableIter2.next());
+                }
+//                if(_tableIter1.hasNext()) { //  circumstances to make a new row
+//                    if (_tableIter2.hasNext()) { // there should be a next value
+//                        _nextRow = TableRow.joinRows(_currRow1, _tableIter2.next());
+//                        System.out.println(_nextRow);
+//                        return true;
+//                    }// reset the iterator for
+//                    else {
+//                        _currRow1 = _tableIter1.next();
+//                        _tableIter2 = _table2.iterator();
+//                        //System.out.println(_currRow1);
+//                        return true;
+//                    }
+//                }
             }
             return _nextRow != null;
         }

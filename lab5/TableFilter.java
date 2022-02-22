@@ -8,6 +8,7 @@ import java.util.NoSuchElementException;
  *
  * @author Matthew Owen, modified existing code by P. N. Hilfinger
  */
+//inherits hasnext() and next() from interator class
 public abstract class TableFilter implements Iterator<Table.TableRow>,
         Iterable<Table.TableRow> {
 
