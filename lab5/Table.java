@@ -228,9 +228,11 @@ public class Table implements Iterable<Table.TableRow> {
                 if(_tableIter2.hasNext()){
                     _nextRow = TableRow.joinRows(_currRow1, _tableIter2.next());
                 }
+
                 else if(_tableIter1.hasNext()){
-                    _currRow1 = _tableIter1.next();
                     _tableIter2 = _table2.iterator();
+                    _currRow1 = _tableIter1.next();
+//                    _tableIter2 = _table2.iterator(); //reset
                     _nextRow = TableRow.joinRows(_currRow1, _tableIter2.next());
                 }
 //                if(_tableIter1.hasNext()) { //  circumstances to make a new row
