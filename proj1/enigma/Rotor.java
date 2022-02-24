@@ -50,37 +50,33 @@ class Rotor {
         return _setting; // FIXME
     }
 
-    /** modulus function **/
-    int mod (int po, int asize){
-        int result = po%asize;
-        if(result<0){
-            result += asize;
-        }
-        return result;
-    }
 
     /** Set setting() to POSN.  */
     void set(int posn) {
-        _setting = mod(posn,26);// FIXME
+        _setting = posn;
+        // FIXME
     }
 
     /** Set setting() to character CPOSN. */
     void set(char cposn) {
-        _setting = mod(cposn,26);// FIXME
+        _setting = _permutation.alphabet().toInt(cposn);
+        // FIXME
     }
 
     /** Return the conversion of P (an integer in the range 0..size()-1)
      *  according to my permutation. */
     int convertForward(int p) {
-        int result = _permutation.permute(p+_setting % size());// FIXME
-        return mod(result-_setting,size());
+        // FIXME
+        int conF = _permutation.permute(_permutation.wrap(_setting + p));
+        return _permutation.wrap(conF -_setting);
     }
 
     /** Return the conversion of E (an integer in the range 0..size()-1)
      *  according to the inverse of my permutation. */
     int convertBackward(int e) {
-        int result = _permutation.invert(e+_setting % size()); // FIXME
-        return mod(result-_setting,size());
+        // FIXME
+        int conB = _permutation.invert(_permutation.wrap(_setting + e));
+        return _permutation.wrap(conB - _setting);
     }
 
     /** Returns the positions of the notches, as a string giving the letters

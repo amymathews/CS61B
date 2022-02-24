@@ -25,13 +25,14 @@ class MovingRotor extends Rotor {
     }
     @Override
     boolean atNotch() {
-        return _notch.indexOf
-                (permutation().alphabet().toChar(setting())) != -1;
+        return false;
     }
 
     @Override
+    /**we should be advancing one at a time then set the position to it, so we can call set defined in aprent class **/
     void advance() {
-        set(permutation().wrap(setting() + 1));
+        int _advance = permutation().wrap(setting()+1);
+        super.set(_advance);
         // FIXME
     }
 
