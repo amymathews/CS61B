@@ -14,6 +14,7 @@ class MovingRotor extends Rotor {
      */
     MovingRotor(String name, Permutation perm, String notches) {
         super(name, perm);
+        _notch = notches;
         // FIXME
     }
 
@@ -30,5 +31,6 @@ class MovingRotor extends Rotor {
     }
 
     // FIXME: ADDITIONAL FIELDS HERE, AS NEEDED
+    private String _notch;
 
 }

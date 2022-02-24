@@ -1,5 +1,7 @@
 package enigma;
 
+import java.util.Arrays;
+
 import static enigma.EnigmaException.*;
 
 /** Represents a permutation of a range of integers starting at 0 corresponding
@@ -12,15 +14,47 @@ class Permutation {
      *  form "(cccc) (cc) ..." where the c's are characters in ALPHABET, which
      *  is interpreted as a permutation in cycle notation.  Characters in the
      *  alphabet that are not included in any cycle map to themselves.
-     *  Whitespace is ignored. */
+     *  Whitespace is ignored.
+     *  I want to get rid of the brackets and whitespaces first*/
     Permutation(String cycles, Alphabet alphabet) {
         _alphabet = alphabet;
+        data = cycles;
+        data = data.replace("(","");
+        data = data.replace(")","");
+        String[] rows = data.split(" ");
+        String[][] map = new String[rows.length][];
+        int i = 0;
+        for(String row: rows) {
+            map[i++] =  row.split(",");
+        }
+        System.out.println(Arrays.deepToString(map));
+
+
+//        holder = cycles;
+//        holder = holder.trim();
+//        holder = holder.replace("(","");
+//        holder = holder.replace(")","");
+//        cycle = holder;
+//        char[][] perm = new char[cycle.length()][cycle.length()];
+//        for(int i = 0; i < _alphabet.size(); i += 1){
+//            for(int j =0; j < cycle.length(); j +=1){
+//                perm[i][j] = cycle.charAt(j);
+//            }
+//        }
+//        System.out.println(perm);
         // FIXME
     }
 
     /** Add the cycle c0->c1->...->cm->c0 to the permutation, where CYCLE is
      *  c0c1...cm. */
     private void addCycle(String cycle) {
+//        char[][] perm = new char[cycle.length()][cycle.length()];
+//        for(int i = 0; i < _alphabet.size(); i += 1){
+//            for(int j =0; j < cycle.length(); j +=1){
+//                perm[i][j] = cycle[j];
+//                System.out.println(perm);
+//            }
+//        }
         // FIXME
     }
 
@@ -35,7 +69,7 @@ class Permutation {
 
     /** Returns the size of the alphabet I permute. */
     int size() {
-        return 0; // FIXME
+        return _alphabet.size(); // FIXME
     }
 
     /** Return the result of applying this permutation to P modulo the
@@ -74,6 +108,8 @@ class Permutation {
 
     /** Alphabet of this permutation. */
     private Alphabet _alphabet;
+    private String data;
+
 
     // FIXME: ADDITIONAL FIELDS HERE, AS NEEDED
 }
