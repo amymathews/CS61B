@@ -19,9 +19,19 @@ class MovingRotor extends Rotor {
     }
 
     // FIXME?
+    @Override
+    boolean rotates() {
+        return true;
+    }
+    @Override
+    boolean atNotch() {
+        return _notch.indexOf
+                (permutation().alphabet().toChar(setting())) != -1;
+    }
 
     @Override
     void advance() {
+        set(permutation().wrap(setting() + 1));
         // FIXME
     }
 

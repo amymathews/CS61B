@@ -1,5 +1,6 @@
 package enigma;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import static enigma.EnigmaException.*;
@@ -17,17 +18,31 @@ class Permutation {
      *  Whitespace is ignored.
      *  I want to get rid of the brackets and whitespaces first*/
     Permutation(String cycles, Alphabet alphabet) {
+        String[] rows;
+        String data;
         _alphabet = alphabet;
+        permlist = new ArrayList<>();
         data = cycles;
-        data = data.replace("(","");
-        data = data.replace(")","");
-        String[] rows = data.split(" ");
-        String[][] map = new String[rows.length][];
-        int i = 0;
-        for(String row: rows) {
-            map[i++] =  row.split(",");
+        data = data.replaceAll("[)(]", "");
+        rows = data.split(" ");
+        for(int i =0; i< _alphabet.size();i+=1){
+            permlist.add(i);
         }
-        System.out.println(Arrays.deepToString(map));
+        for(String row: rows) {
+            addCycle(row);
+        }
+
+
+//        data = cycles;
+//        data = data.replace("(","");
+//        data = data.replace(")","");
+//        String[] rows = data.split(" ");
+//        String[][] map = new String[rows.length][];
+//        int i = 0;
+//        for(String row: rows) {
+//            map[i++] =  row.split(",");
+//        }
+//        System.out.println(Arrays.deepToString(map));
 
 
 //        holder = cycles;
@@ -46,8 +61,23 @@ class Permutation {
     }
 
     /** Add the cycle c0->c1->...->cm->c0 to the permutation, where CYCLE is
-     *  c0c1...cm. */
+     *  c0c1...cm.
+     *  _alphabet of this permutation
+     *  alphabet used to initialize this permutation.*/
     private void addCycle(String cycle) {
+        int cylen = cycle.length();
+        for(int i =0; i<cylen; i+=1) {
+            char flag = cycle.charAt(i);
+            if(cylen<1){
+                permlist.set(_alphabet.toInt(flag),_alphabet.toInt(cycle.charAt(flag)));
+            }
+            if(i != cylen-1){
+                permlist.set(_alphabet.toInt(flag),alphabet().toInt(cycle.charAt(i+1)));
+            }
+            else{
+                permlist.set(_alphabet.toInt(flag),alphabet().toInt(cycle.charAt(0)));
+            }
+        }
 //        char[][] perm = new char[cycle.length()][cycle.length()];
 //        for(int i = 0; i < _alphabet.size(); i += 1){
 //            for(int j =0; j < cycle.length(); j +=1){
@@ -75,24 +105,27 @@ class Permutation {
     /** Return the result of applying this permutation to P modulo the
      *  alphabet size. */
     int permute(int p) {
-        return 0;  // FIXME
+        return permlist.get(wrap(p));  // FIXME
     }
 
     /** Return the result of applying the inverse of this permutation
      *  to  C modulo the alphabet size. */
     int invert(int c) {
-        return 0;  // FIXME
+        return permlist.indexOf(wrap(c));  // FIXME
     }
 
     /** Return the result of applying this permutation to the index of P
      *  in ALPHABET, and converting the result to a character of ALPHABET. */
     char permute(char p) {
-        return 0;  // FIXME
+        int index = _alphabet.toInt(p);
+        return alphabet().toChar(index);// FIXME
     }
 
     /** Return the result of applying the inverse of this permutation to C. */
     char invert(char c) {
-        return 0;  // FIXME
+        int index = _alphabet.toInt(c);
+        return  alphabet().toChar(permute(index));
+        // FIXME
     }
 
     /** Return the alphabet used to initialize this Permutation. */
@@ -103,12 +136,18 @@ class Permutation {
     /** Return true iff this permutation is a derangement (i.e., a
      *  permutation for which no value maps to itself). */
     boolean derangement() {
-        return true;  // FIXME
+        for(int i =0; i<permlist.size(); i +=1){
+            if(i != permlist.indexOf(i)){
+                return true;
+            }
+        }
+        return false;  // FIXME
     }
 
     /** Alphabet of this permutation. */
     private Alphabet _alphabet;
     private String data;
+    private ArrayList<Integer> permlist;
 
 
     // FIXME: ADDITIONAL FIELDS HERE, AS NEEDED

@@ -11,6 +11,7 @@ class Rotor {
     Rotor(String name, Permutation perm) {
         _name = name;
         _permutation = perm;
+        _setting = 0;
         // FIXME
     }
 
@@ -46,37 +47,40 @@ class Rotor {
 
     /** Return my current setting. */
     int setting() {
-        return 0; // FIXME
+        return _setting; // FIXME
+    }
+
+    /** modulus function **/
+    int mod (int po, int asize){
+        int result = po%asize;
+        if(result<0){
+            result += asize;
+        }
+        return result;
     }
 
     /** Set setting() to POSN.  */
     void set(int posn) {
-        // FIXME
+        _setting = mod(posn,26);// FIXME
     }
 
     /** Set setting() to character CPOSN. */
     void set(char cposn) {
-        // FIXME
+        _setting = mod(cposn,26);// FIXME
     }
 
     /** Return the conversion of P (an integer in the range 0..size()-1)
      *  according to my permutation. */
     int convertForward(int p) {
-        int result = 0; // FIXME
-        if (Main.verbose()) {
-            System.err.printf("%c -> ", alphabet().toChar(result));
-        }
-        return result;
+        int result = _permutation.permute(p+_setting % size());// FIXME
+        return mod(result-_setting,size());
     }
 
     /** Return the conversion of E (an integer in the range 0..size()-1)
      *  according to the inverse of my permutation. */
     int convertBackward(int e) {
-        int result = 0; // FIXME
-        if (Main.verbose()) {
-            System.err.printf("%c -> ", alphabet().toChar(result));
-        }
-        return result;
+        int result = _permutation.invert(e+_setting % size()); // FIXME
+        return mod(result-_setting,size());
     }
 
     /** Returns the positions of the notches, as a string giving the letters
@@ -107,5 +111,6 @@ class Rotor {
     private Permutation _permutation;
 
     // FIXME: ADDITIONAL FIELDS HERE, AS NEEDED
+    private int _setting;
 
 }
