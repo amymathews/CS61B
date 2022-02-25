@@ -84,7 +84,7 @@ public abstract class PermutationTest {
         checkPerm("identity", UPPER_STRING, UPPER_STRING, perm, alpha);
     }
     @Test
-    public void TestAddCyle(){
+    public void Test1(){
           Permutation perm1 = getNewPermutation("(ABC)", getNewAlphabet("ABCDE"));
           assertEquals('B',perm1.permute('A'));
           assertEquals('C', perm1.permute('B'));
@@ -96,6 +96,12 @@ public abstract class PermutationTest {
           assertEquals('A', perm1.invert('B'));
           assertEquals('D', perm1.invert('D'));
 
+    }
+    public void Test2(){
+        Permutation perm2 = getNewPermutation("(ABC) (DEF)", getNewAlphabet("ABCDEFGH"));
+        assertEquals('C', perm2.permute('A'));
+        assertEquals('D', perm2.permute('F'));
+        assertEquals(8,perm2.size());
     }
 
     @Test
