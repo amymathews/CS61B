@@ -110,28 +110,30 @@ public abstract class PermutationTest {
 
     @Test
     public void Test3(){
-        Permutation perm3 = getNewPermutation("()", getNewAlphabet("ABCDEFGHI"));
-        assertEquals('A',perm3.invert('A'));
+        Permutation perm3 = getNewPermutation("(AB) (C) (DEG)", getNewAlphabet("ABCDEFGHI"));
+        assertEquals('B',perm3.invert('A'));
         assertEquals('C', perm3.invert('C'));
-        assertEquals('G',perm3.permute('G'));
+        assertEquals('D',perm3.permute('G'));
         assertEquals(9, perm3.size());
     }
 
-    public void Test(){
+    public void Test4(){
         Permutation perm4 = getNewPermutation("", getNewAlphabet("ABC"));
         assertEquals("A", perm4.permute('A'));
         assertEquals('B', perm4.invert('B'));
         assertEquals(3,perm4.size());
     }
 
-    @Test
-    public void TestInvertInt(){
-
+    @Test(expected = EnigmaException.class)
+    public void testNotInAlphabet() {
+        Permutation p = getNewPermutation("(BACD)", getNewAlphabet("ABCD"));
+        p.invert('F');
     }
 
-    @Test
-    public void TestPermuteChar(){
-
+    @Test(expected = EnigmaException.class)
+    public void TestnotInIndex(){
+        Permutation p = getNewPermutation("AB", getNewAlphabet("ABC"));
+        p.permute(3);
     }
 
     @Test
