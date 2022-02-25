@@ -19,14 +19,14 @@ class MovingRotor extends Rotor {
     }
 
     // FIXME?
-    @Override
-    boolean rotates() {
-        return true;
-    }
-    @Override
-    boolean atNotch() {
-        return false;
-    }
+//    @Override
+//    boolean rotates() {
+//        return true;
+//    }
+//    @Override
+//    boolean atNotch() {
+//        return false;
+//    }
 
     @Override
     /**we should be advancing one at a time then set the position to it, so we can call set defined in aprent class **/
