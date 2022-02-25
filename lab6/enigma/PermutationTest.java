@@ -102,11 +102,26 @@ public abstract class PermutationTest {
         assertEquals('C', perm2.permute('A'));
         assertEquals('D', perm2.permute('F'));
         assertEquals(8,perm2.size());
+        assertEquals('G', perm2.permute('G'));
+        assertEquals('B',perm2.invert('C'));
+        assertEquals('E', perm2.invert('F'));
+        assertEquals('H', perm2.invert('H'));
     }
 
     @Test
-    public void TestPermuteInt(){
+    public void Test3(){
+        Permutation perm3 = getNewPermutation("()", getNewAlphabet("ABCDEFGHI"));
+        assertEquals('A',perm3.invert('A'));
+        assertEquals('C', perm3.invert('C'));
+        assertEquals('G',perm3.permute('G'));
+        assertEquals(9, perm3.size());
+    }
 
+    public void Test(){
+        Permutation perm4 = getNewPermutation("", getNewAlphabet("ABC"));
+        assertEquals("A", perm4.permute('A'));
+        assertEquals('B', perm4.invert('B'));
+        assertEquals(3,perm4.size());
     }
 
     @Test
