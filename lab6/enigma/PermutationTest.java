@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.junit.Rule;
 import org.junit.rules.Timeout;
 
+
 import static org.junit.Assert.*;
 
 import static enigma.TestUtils.*;
@@ -90,6 +91,10 @@ public abstract class PermutationTest {
           assertEquals('A', perm1.permute('C'));
           assertEquals('D', perm1.permute('D'));
           assertEquals('E', perm1.permute('E'));
+          assertEquals(5,perm1.size());
+          assertEquals('B', perm1.invert('C'));
+          assertEquals('A', perm1.invert('B'));
+          assertEquals('D', perm1.invert('D'));
 
     }
 
