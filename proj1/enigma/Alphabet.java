@@ -43,7 +43,7 @@ class Alphabet {
            if(holder[i] == ch){
                return i;
        }
-       return 0;
+       return -1;
     }
 
 /** instance variables. */

@@ -82,14 +82,14 @@ class Machine {
                 _currRotors[i].set(setting.charAt(i-1));
             }
         }
-        else{
+        else {
             throw new EnigmaException("setting length does not match conditions");
         }
     }
 
     /** Return the current plugboard's permutation. */
     Permutation plugboard() {
-        return _plugboard;// FIXME
+        return this._plugboard;// FIXME
     }
 
     /** Set the plugboard to PLUGBOARD. */
@@ -129,13 +129,20 @@ class Machine {
         /**  boolean array that holds which ones should advance, -> for loop advance at each true**/
         /** check if there are no rotors**/
         Boolean[] flag = new Boolean[_currRotors.length];
-        flag[numRotors()-1] = true; // should always advance
+        int k = numRotors() -1;
+        flag[k] = true; // should always advance
+
         if(numRotors() == 0){
             throw new EnigmaException("No rotors!");
         }
+
         for(int i = numRotors()-2; i>= 0; i -= 1) {
-            /** If I am at a notch and I rotate I should advance and the rotor on my right also advances . **/
             if(_currRotors[i+1].atNotch()){
+                flag[i] = true;
+            }
+
+            /** If I am at a notch and I rotate I should advance and the rotor on my right also advances . **/
+            if(_currRotors[i+1].atNotch() && _currRotors[i].rotates()){
                flag[i+1] = true;
                flag[i] = true;
             }
@@ -147,6 +154,7 @@ class Machine {
             if(flag[j] == true){
                 _currRotors[j].advance();
             }
+
         }
 
         // FIXME
@@ -158,7 +166,7 @@ class Machine {
      *  end of array -> to front got covertforward method
      *  front -> the back convertbackward.*/
     private int applyRotors(int c) {
-        int _result = _plugboard.permute(c);
+        int _result = c;
         /** convert forward first**/
 
         for(int i = _numRotors - 1; i >= 0; i -= 1){
@@ -168,7 +176,6 @@ class Machine {
         for (int j = 1; j < _numRotors; j += 1){
             _result = _currRotors[j].convertBackward(_result);
         }
-        _result = _plugboard.invert(_result);
         return _result; // FIXME
     }
 
