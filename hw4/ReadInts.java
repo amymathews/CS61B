@@ -34,7 +34,7 @@ public class ReadInts {
         Scanner s = new Scanner(input);
         while (s.hasNext()) {
             int nextInt = s.nextInt();
-            // FIXME
+            L.add(nextInt);// FIXME
         }
         return L;
     }
@@ -49,6 +49,18 @@ public class ReadInts {
      *  trying to read them and getting an exception? */
     public static List<Integer> smartReadInts(String input) {
         // FIXME
-        return null;
+        ArrayList<Integer> retArray = new ArrayList<>();
+        Scanner s = new Scanner(input);
+        while (s.hasNext()) {
+            if(s.hasNextInt()) {
+                int next = s.nextInt();
+                retArray.add(next);
+            }
+            else {
+                s.next();
+            }
+        }
+
+        return retArray;
     }
 }

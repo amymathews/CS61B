@@ -129,29 +129,26 @@ class Machine {
         /**  boolean array that holds which ones should advance, -> for loop advance at each true**/
         /** check if there are no rotors**/
         Boolean[] flag = new Boolean[_currRotors.length];
+        for(int i =0; i< flag.length; i +=1){
+            flag[i] = false;
+        }
         int k = numRotors() -1;
         flag[k] = true; // should always advance
 
         if(numRotors() == 0){
             throw new EnigmaException("No rotors!");
         }
-
-        for(int i = numRotors()-2; i>= 0; i -= 1) {
-            if(_currRotors[i+1].atNotch()){
-                flag[i] = true;
-            }
-
+        for(int i = numRotors()-2; i >= 0; i -= 1) {
+//
             /** If I am at a notch and I rotate I should advance and the rotor on my right also advances . **/
             if(_currRotors[i+1].atNotch() && _currRotors[i].rotates()){
-               flag[i+1] = true;
-               flag[i] = true;
-            }
-            else{
-                flag[i] = false;
+                if(_currRotors[i+1].rotates())
+                   flag[i+1] = true;
+                flag[i] = true;
             }
         }
-        for(int j = 0; j < flag.length; j +=1){
-            if(flag[j] == true){
+        for(int j = 0; j < numRotors(); j +=1){
+            if(flag[j]){
                 _currRotors[j].advance();
             }
 
