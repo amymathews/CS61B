@@ -20,7 +20,7 @@ class Machine {
         _numRotors = numRotors;
         _pawls = pawls;
         _allRotors = new ArrayList<>(allRotors);
-        _currRotors = _allRotors.toArray(new Rotor[0]);
+        _currRotors = new Rotor[numRotors];
         // FIXME
     }
 
@@ -40,10 +40,12 @@ class Machine {
      *  #(numRotors()-1) is the fast Rotor.  Modifying this Rotor has
      *  undefined results. */
     Rotor getRotor(int k) {
+
         return _currRotors[k]; // FIXME
     }
 
     Alphabet alphabet() {
+
         return _alphabet;
     }
 
@@ -58,11 +60,11 @@ class Machine {
         int m = 0;
         for(String i: rotors){
             for(Rotor j: _allRotors){
-                m += 1;
                 if(i == j.name()){
                     _currRotors[m] = j;
                  }
              }
+            m += 1;
         }
     }
 
@@ -73,11 +75,11 @@ class Machine {
     void setRotors(String setting) {
         // FIXME
         if(setting.length() == numRotors() - 1){
-            for(int i = 0; i < _currRotors.length; i +=1 ){
-                if(!_alphabet.contains(setting.charAt(i))){
+            for(int i = 1; i < _currRotors.length; i +=1 ){
+                if(!_alphabet.contains(setting.charAt(i-1))){
                     throw new EnigmaException("no such setting");
                 }
-                _currRotors[i].set(setting.charAt(i));
+                _currRotors[i].set(setting.charAt(i-1));
             }
         }
         else{
@@ -123,35 +125,64 @@ class Machine {
     /** Advance all rotors to their next position.
      * here we must check for double stepping*/
     private void advanceRotors() {
-        //int i = numRotors()-numPawls();
-        for(int i = 1; i<numRotors(); i+=1) {
-            /** I am at a notch, no only do I rotate but I rotate my neighbor on the right**/
 
-            if(_currRotors[i].atNotch()){
-                _currRotors[i].advance();
-                _currRotors[i+1].advance();
+        /**  boolean array that holds which ones should advance, -> for loop advance at each true**/
+        /** check if there are no rotors**/
+        Boolean[] flag = new Boolean[_currRotors.length];
+        flag[numRotors()-1] = true; // should always advance
+        if(numRotors() == 0){
+            throw new EnigmaException("No rotors!");
+        }
+        for(int i = numRotors()-2; i>= 0; i -= 1) {
+            /** If I am at a notch and I rotate I should advance and the rotor on my right also advances . **/
+            if(_currRotors[i+1].atNotch()){
+               flag[i+1] = true;
+               flag[i] = true;
             }
-            /** if the right rotor is at a notch it should advance **/
-            if(_currRotors[0].atNotch()){
-                _currRotors[1].advance();
+            else{
+                flag[i] = false;
             }
-            /** the right rotor always advances **/
-            _currRotors[0].advance();
+        }
+        for(int j = 0; j < flag.length; j +=1){
+            if(flag[j] == true){
+                _currRotors[j].advance();
+            }
         }
 
         // FIXME
     }
 
     /** Return the result of applying the rotors to the character C (as an
-     *  index in the range 0..alphabet size - 1). */
+     *  index in the range 0..alphabet size - 1).
+     *  use convert forward and convert backward, iterate through
+     *  end of array -> to front got covertforward method
+     *  front -> the back convertbackward.*/
     private int applyRotors(int c) {
-        return c; // FIXME
+        int _result = _plugboard.permute(c);
+        /** convert forward first**/
+
+        for(int i = _numRotors - 1; i >= 0; i -= 1){
+            _result = _currRotors[i].convertForward(_result);
+        }
+        /** going after the reflector, so start at one, convert backwards**/
+        for (int j = 1; j < _numRotors; j += 1){
+            _result = _currRotors[j].convertBackward(_result);
+        }
+        _result = _plugboard.invert(_result);
+        return _result; // FIXME
     }
 
     /** Returns the encoding/decoding of MSG, updating the state of
-     *  the rotors accordingly. */
+     *  the rotors accordingly.
+     *  what is a string builder?
+     *  Build a string all of versions of alphabhet
+     *  take indvividual characters of msg and convert wheters a part alaphabhet or not (user convert int)*/
     String convert(String msg) {
-        return ""; // FIXME
+        String _retString = "";
+        for(int i = 0; i< msg.length(); i += 1){
+            _retString += _alphabet.toChar(convert(_alphabet.toInt(msg.charAt(i))));
+        }
+        return _retString; // FIXME
     }
 
     /** Common alphabet of my rotors. */

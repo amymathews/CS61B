@@ -86,9 +86,14 @@ class Rotor {
     }
 
     /** Returns true iff I am positioned to allow the rotor to my left
-     *  to advance. */
+     *  to advance.
+     *  if current setting of rotor is one of the notches
+     *  alphabet with setting to get the index
+     *  input setting into alphabhet*/
     boolean atNotch() {
-        return false; // FIXME
+
+       return notches().indexOf(alphabet().toChar(this.setting())) >= 0;
+                // FIXME
     }
 
     /** Advance me one position, if possible. By default, does nothing. */
