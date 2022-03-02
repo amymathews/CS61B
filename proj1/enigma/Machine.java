@@ -27,7 +27,7 @@ class Machine {
     /** Return the number of rotor slots I have. */
     int numRotors() {
 
-        return _numRotors; // FIXME
+        return _numRotors;
     }
 
     /** Return the number pawls (and thus rotating rotors) I have. */
@@ -58,15 +58,15 @@ class Machine {
     void insertRotors(String[] rotors) {
         // FIXME
         int m = 0;
-        for(String i: rotors){
-            for(Rotor j: _allRotors){
-                if(i == j.name()){
+        for (String i: rotors) {
+            for (Rotor j: _allRotors) {
+                if (i == j.name()) {
                     _currRotors[m] = j;
                  }
              }
             m += 1;
         }
-        if(_currRotors.length != rotors.length){
+        if (_currRotors.length != rotors.length) {
             throw new EnigmaException("Missing some rotors");
         }
     }
@@ -76,9 +76,9 @@ class Machine {
      *  to the leftmost rotor setting (not counting the reflector).  */
     void setRotors(String setting) {
         // FIXME
-        if(setting.length() == numRotors() - 1){
-            for(int i = 1; i < _currRotors.length; i +=1 ){
-                if(!_alphabet.contains(setting.charAt(i-1))){
+        if (setting.length() == numRotors() - 1) {
+            for (int i = 1; i < _currRotors.length; i +=1 ) {
+                if (!_alphabet.contains(setting.charAt(i-1))) {
                     throw new EnigmaException("no such setting");
                 }
                 _currRotors[i].set(setting.charAt(i-1));
@@ -134,13 +134,13 @@ class Machine {
         int k = numRotors() - 1;
         flag[k] = true;
 
-        if(numRotors() == 0){
+        if (numRotors() == 0) {
             throw new EnigmaException("No rotors!");
         }
-        for(int i = numRotors() - 2; i >= 0; i -= 1) {
+        for (int i = numRotors() - 2; i >= 0; i -= 1) {
             /** If I am at a notch and I rotate I should advance and the rotor on my right also advances . **/
-            if(_currRotors[i + 1].atNotch() && _currRotors[i].rotates()) {
-                if(_currRotors[i+1].rotates())
+            if (_currRotors[i + 1].atNotch() && _currRotors[i].rotates()) {
+                if (_currRotors[i+1].rotates())
                    flag[i + 1] = true;
                 flag[i] = true;
             }
@@ -159,7 +159,6 @@ class Machine {
             if(flag[j]) {
                 _currRotors[j].advance();
             }
-
         }
 
         // FIXME
@@ -174,11 +173,11 @@ class Machine {
         int _result = c;
         /** convert forward first**/
 
-        for(int i = _numRotors - 1; i >= 0; i -= 1){
+        for (int i = _numRotors - 1; i >= 0; i -= 1) {
             _result = _currRotors[i].convertForward(_result);
         }
         /** going after the reflector, so start at one, convert backwards**/
-        for (int j = 1; j < _numRotors; j += 1){
+        for (int j = 1; j < _numRotors; j += 1) {
             _result = _currRotors[j].convertBackward(_result);
         }
         return _result; // FIXME
@@ -191,7 +190,7 @@ class Machine {
      *  take indvividual characters of msg and convert wheters a part alaphabhet or not (user convert int)*/
     String convert(String msg) {
         String _retString = "";
-        for(int i = 0; i< msg.length(); i += 1){
+        for (int i = 0; i< msg.length(); i += 1) {
             _retString += _alphabet.toChar(convert(_alphabet.toInt(msg.charAt(i))));
         }
         return _retString; // FIXME

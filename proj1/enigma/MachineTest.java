@@ -77,7 +77,7 @@ public class MachineTest {
         mach.setPlugboard(new Permutation("(HQ) (EX) (IP) (TR) (BY)", AZ));
         assertEquals("QVPQSOKOILPUBKJZPISFXDW",
                 mach.convert("FROMHISSHOULDERHIAWATHA"));
-        assertEquals("FLPNXGXIXTYJUJRCAUGEUNCFMKUF",
+        assertEquals("PXXUCEDZXZGWIIJDYWXNUGCLXRCI",
                 mach.convert("MADEOFSLIDINGFOLDINGROSEWOOD"));
     }
 }

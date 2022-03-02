@@ -28,7 +28,7 @@ class Alphabet {
     /** Returns true if CH is in this alphabet. */
     boolean contains(char ch) {
         for (int i : holder) {
-            if(i == ch){
+            if (i == ch) {
                 return true;
             }
         }
@@ -37,7 +37,9 @@ class Alphabet {
 
     /** Returns character number INDEX in the alphabet, where
      *  0 <= INDEX < size(). */
-    char toChar(int index) { return holder[index]; }
+    char toChar(int index) {
+        return holder[index];
+    }
 
     /** Returns the index of character CH which must be in
      *  the alphabet. This is the inverse of toChar(). */
@@ -47,7 +49,7 @@ class Alphabet {
                 return i;
             }
         }
-       return -1;
+        return -1;
     }
 
 /** instance variables. */

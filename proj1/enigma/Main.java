@@ -4,19 +4,19 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Scanner;
+import java.util.*;
 
 import ucb.util.CommandArgs;
 
 import static enigma.EnigmaException.*;
 
 /** Enigma simulator.
- *  @author
+ *  @author Amy Mathews
  */
 public final class Main {
+    /** parese in and conf files
+     * buidl machine according to specifiaction,
+     * encrypt provided message**/
 
     /** Process a sequence of encryptions and decryptions, as
      *  specified by ARGS, where 1 <= ARGS.length <= 3.
@@ -83,53 +83,85 @@ public final class Main {
 
     /** Configure an Enigma machine from the contents of configuration
      *  file _config and apply it to the messages in _input, sending the
-     *  results to _output. */
+     *  results to _output.
+     *  hub of machine
+     *  call other methods here
+     *  encrypt message in process
+     *  encrypt and output*/
     private void process() {
         Machine obj = readConfig();
         String _setting = _input.nextLine();
-        String msg = "";
+        while (_input.hasNextLine()) {
+            if (_setting.contains("*")) {
+                setUp(obj, _setting);
+            }
+            else {
+                throw new EnigmaException("Wrong format!");
+            }
 
+        }
 
         // FIXME
     }
 
     /** Return an Enigma machine configured from the contents of configuration
-     *  file _config. */
+     *  file _config.
+     *  parse through the _config file*/
     private Machine readConfig() {
         try {
             // FIXME
+            String text = _config.next();
             _alphabet = new Alphabet();
-            return new Machine(_alphabet, 2, 1, null);
+            int numRotors = _config.nextInt();
+            int numPawls = _config.nextInt();
+            allRotors = new ArrayList<>();
+            if (text.contains("(") | text.contains(")") | text.contains("*")) {
+                throw new EnigmaException("Wrong configuration format!");
+            }
+            while(_config.hasNext()){
+                allRotors.add(readRotor());
+            }
+            return new Machine(_alphabet, numRotors, numPawls, allRotors);
         } catch (NoSuchElementException excp) {
             throw error("configuration file truncated");
         }
     }
 
-    /** Return a rotor, reading its description from _config. */
+    /** Return a rotor, reading its description from _config.
+     * helper function to readconfig */
     private Rotor readRotor() {
         try {
-            return null; // FIXME
+            // FIXME
+            String cycles = "";
+            String rotortype = (_config.next()).toUpperCase();
+            String name = rotortype;
+            String notches = rotortype.substring(1);
+            /** if the rotortype has something in it, we want to add it to the cycle **/
+            while(_config.hasNext("\\(.*\\)")){
+                cycles += _config.next();
+            }
+            Permutation permutation =  new Permutation(cycles,_alphabet);
+
+                if (name.charAt(0) == 'R') {
+                    return new Reflector(name, permutation);
+                } else if (name.charAt(0) == 'N') {
+                    return new FixedRotor(name, permutation);
+                } else if (name.charAt(0) == 'M') {
+                    return new MovingRotor(name, permutation, notches);
+                } else {
+                    throw new EnigmaException("No valid rotor found!");
+                }
+
         } catch (NoSuchElementException excp) {
             throw error("bad rotor description");
         }
     }
 
     /** Set M according to the specification given on SETTINGS,
-     *  which must have the format specified in the assignment. */
+     *  which must have the format specified in the assignment.
+     *  parse the in file.*/
     private void setUp(Machine M, String settings) {
-        String[] _setting = settings.split(" ");
-        String[] rotorList = new String[M.numRotors()];
-        if(_setting.length - 1 < M.numRotors()){
-            throw new EnigmaException("too few arguments");
-        }
-        for(int i =0; i< M.numRotors(); i += 1){
-            rotorList[i] = _setting[i];
-        }
-        for(int i =0; i< rotorList.length; i += 1){
-            if(rotorList[i].equals(rotorList[i+1])){
-                throw new EnigmaException("Invalid, rotor repeated");
-            }
-        }
+        M.setRotors(settings);
         // FIXME
     }
 
@@ -159,4 +191,6 @@ public final class Main {
 
     /** True if --verbose specified. */
     private static boolean _verbose;
+
+    private ArrayList allRotors;
 }

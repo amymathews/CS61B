@@ -9,7 +9,7 @@ import static enigma.EnigmaException.*;
 
 /** Represents a permutation of a range of integers starting at 0 corresponding
  *  to the characters of an alphabet.
- *  @author
+ *  @author Amy Mathews
  */
 class Permutation {
 
@@ -29,34 +29,10 @@ class Permutation {
         data = data.replaceAll("[)(]", "");
         rows = data.split(" ");
 
-        for(String row: rows) {
+        for (String row: rows) {
             addCycle(row);
         }
 
-//        data = cycles;
-//        data = data.replace("(","");
-//        data = data.replace(")","");
-//        String[] rows = data.split(" ");
-//        String[][] map = new String[rows.length][];
-//        int i = 0;
-//        for(String row: rows) {
-//            map[i++] =  row.split(",");
-//        }
-//        System.out.println(Arrays.deepToString(map));
-
-
-//        holder = cycles;
-//        holder = holder.trim();
-//        holder = holder.replace("(","");
-//        holder = holder.replace(")","");
-//        cycle = holder;
-//        char[][] perm = new char[cycle.length()][cycle.length()];
-//        for(int i = 0; i < _alphabet.size(); i += 1){
-//            for(int j =0; j < cycle.length(); j +=1){
-//                perm[i][j] = cycle.charAt(j);
-//            }
-//        }
-//        System.out.println(perm);
         // FIXME
     }
 
@@ -67,53 +43,27 @@ class Permutation {
     private void addCycle(String cycle) {
         // FIXME
 
-        for(int i =0; i < cycle.length(); i +=1)
-            if(cycle.length() < 1){
-                permhash.put(cycle.charAt(i),cycle.charAt(i));
-                rpermhash.put(cycle.charAt(i),cycle.charAt(i));
+        for (int i = 0; i < cycle.length(); i +=1) {
+            if (cycle.length() < 1) {
+                permhash.put(cycle.charAt(i), cycle.charAt(i));
+                rpermhash.put(cycle.charAt(i), cycle.charAt(i));
+            } else if (i != cycle.length() - 1) {
+                permhash.put(cycle.charAt(i), cycle.charAt(i + 1));
+                rpermhash.put(cycle.charAt(i + 1), cycle.charAt(i));
+            } else {
+                permhash.put(cycle.charAt(i), cycle.charAt(0));
+                rpermhash.put(cycle.charAt(0), cycle.charAt(i));
             }
-            else if(i != cycle.length() - 1){
-                permhash.put(cycle.charAt(i),cycle.charAt(i+1));
-                rpermhash.put(cycle.charAt(i+1),cycle.charAt(i));
+        }
+        for (int i = 0; i < alphabet().size(); i += 1) {
+            char c = _alphabet.toChar(i);
+            if (!permhash.containsKey(c)) {
+                permhash.put(_alphabet.toChar(i), _alphabet.toChar(i));
             }
-            else {
-                permhash.put(cycle.charAt(i),cycle.charAt(0));
-                rpermhash.put(cycle.charAt(0),cycle.charAt(i));
+            if (!rpermhash.containsKey(c)) {
+                rpermhash.put(_alphabet.toChar(i),_alphabet.toChar(i));
             }
-            for(int i = 0; i < alphabet().size(); i +=1){
-                char c = _alphabet.toChar(i);
-                if(!permhash.containsKey(c)) {
-                    permhash.put(_alphabet.toChar(i), _alphabet.toChar(i));
-                }
-                if(!rpermhash.containsKey(c)){
-                    rpermhash.put(_alphabet.toChar(i),_alphabet.toChar(i));
-                }
-
-            }
-
-
-
-
-//        int cylen = cycle.length();
-//        for(int i =0; i<cylen; i+=1) {
-//            char flag = cycle.charAt(i);
-//            if(cylen<1){
-//                permlist.set(_alphabet.toInt(flag),_alphabet.toInt(cycle.charAt(flag)));
-//            }
-//            if(i != cylen-1){
-//                permlist.set(_alphabet.toInt(flag),alphabet().toInt(cycle.charAt(i+1)));
-//            }
-//            else{
-//                permlist.set(_alphabet.toInt(flag),alphabet().toInt(cycle.charAt(0)));
-//            }
-//        }
-//        char[][] perm = new char[cycle.length()][cycle.length()];
-//        for(int i = 0; i < _alphabet.size(); i += 1){
-//            for(int j =0; j < cycle.length(); j +=1){
-//                perm[i][j] = cycle[j];
-//                System.out.println(perm);
-//            }
-//        }
+        }
         // FIXME
     }
 
@@ -132,12 +82,10 @@ class Permutation {
     }
 
     /** Return the result of applying this permutation to P modulo the
-     *  alphabet size.
-     *  the get function ->  return the element at a given index from the specified Array */
+     *  alphabet size.*/
     int permute(int p) {
         char index = _alphabet.toChar(wrap(p));
         return _alphabet.toInt(permhash.get(index)); // FIXME
-//        return permhash.get(wrap(p));
     }
 
     /** Return the result of applying the inverse of this permutation
@@ -152,8 +100,7 @@ class Permutation {
     /** Return the result of applying this permutation to the index of P
      *  in ALPHABET, and converting the result to a character of ALPHABET. */
     char permute(char p) {
-//        int index = _alphabet.toInt(p);
-//        return _alphabet.toChar(permute(index));// FIXME
+//        // FIXME
         return permhash.get(p);
 
     }
@@ -161,8 +108,7 @@ class Permutation {
     /** Return the result of applying the inverse of this permutation to C. */
     char invert(char c) {
         return rpermhash.get(c);
-//        int index = _alphabet.toInt(c);
-//        return _alphabet.toChar(invert(index));// FIXME
+// FIXME
     }
 
     /** Return the alphabet used to initialize this Permutation. */
@@ -174,9 +120,9 @@ class Permutation {
      *  permutation for which no value maps to itself). */
     boolean derangement() {
         {
-            for(char i: permhash.keySet()){
-                for(char j: permhash.values()){
-                    if(i == j){
+            for (char i: permhash.keySet()) {
+                for (char j: permhash.values()) {
+                    if (i == j) {
                         return false;
                     }
                 }
@@ -187,10 +133,11 @@ class Permutation {
 
     /** Alphabet of this permutation. */
     private Alphabet _alphabet;
+    /** String to cycles**/
     private String data;
+    /** Hold forward permutation. **/
     private HashMap<Character, Character> permhash;
+    /**Hold backward permutation. **/
     private HashMap<Character, Character> rpermhash;
 
-
-    // FIXME: ADDITIONAL FIELDS HERE, AS NEEDED
 }
