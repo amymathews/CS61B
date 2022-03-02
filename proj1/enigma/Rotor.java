@@ -91,14 +91,13 @@ class Rotor {
      *  alphabet with setting to get the index
      *  input setting into alphabhet*/
     boolean atNotch() {
-//        return false;
+
        return notches().indexOf(alphabet().toChar(this.setting())) >= 0;
                 // FIXME
     }
 
     /** Advance me one position, if possible. By default, does nothing. */
-    void advance() {
-    }
+    void advance() { }
 
     @Override
     public String toString() {

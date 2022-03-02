@@ -85,6 +85,11 @@ public final class Main {
      *  file _config and apply it to the messages in _input, sending the
      *  results to _output. */
     private void process() {
+        Machine obj = readConfig();
+        String _setting = _input.nextLine();
+        String msg = "";
+
+
         // FIXME
     }
 
@@ -112,6 +117,19 @@ public final class Main {
     /** Set M according to the specification given on SETTINGS,
      *  which must have the format specified in the assignment. */
     private void setUp(Machine M, String settings) {
+        String[] _setting = settings.split(" ");
+        String[] rotorList = new String[M.numRotors()];
+        if(_setting.length - 1 < M.numRotors()){
+            throw new EnigmaException("too few arguments");
+        }
+        for(int i =0; i< M.numRotors(); i += 1){
+            rotorList[i] = _setting[i];
+        }
+        for(int i =0; i< rotorList.length; i += 1){
+            if(rotorList[i].equals(rotorList[i+1])){
+                throw new EnigmaException("Invalid, rotor repeated");
+            }
+        }
         // FIXME
     }
 
@@ -123,6 +141,7 @@ public final class Main {
     /** Print MSG in groups of five (except that the last group may
      *  have fewer letters). */
     private void printMessageLine(String msg) {
+
         // FIXME
     }
 

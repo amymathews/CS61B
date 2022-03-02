@@ -11,7 +11,9 @@ import static org.junit.Assert.*;
  */
 public class MachineTest {
 
-    /** Testing time limit. */
+    /**
+     * Testing time limit.
+     */
 //    @Rule
 //    public Timeout globalTimeout = Timeout.seconds(5);
 
@@ -38,7 +40,7 @@ public class MachineTest {
                         "Q"));
     }
 
-    private static final String[] ROTORS1 = { "B", "Beta", "III", "IV", "I" };
+    private static final String[] ROTORS1 = {"B", "Beta", "III", "IV", "I"};
     private static final String SETTING1 = "AXLE";
 
     private Machine mach1() {
@@ -75,5 +77,9 @@ public class MachineTest {
         mach.setPlugboard(new Permutation("(HQ) (EX) (IP) (TR) (BY)", AZ));
         assertEquals("QVPQSOKOILPUBKJZPISFXDW",
                 mach.convert("FROMHISSHOULDERHIAWATHA"));
+        assertEquals("FLPNXGXIXTYJUJRCAUGEUNCFMKUF",
+                mach.convert("MADEOFSLIDINGFOLDINGROSEWOOD"));
     }
 }
+
+

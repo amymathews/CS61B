@@ -66,8 +66,10 @@ class Machine {
              }
             m += 1;
         }
+        if(_currRotors.length != rotors.length){
+            throw new EnigmaException("Missing some rotors");
+        }
     }
-
 
     /** Set my rotors according to SETTING, which must be a string of
      *  numRotors()-1 characters in my alphabet. The first letter refers
@@ -128,27 +130,33 @@ class Machine {
 
         /**  boolean array that holds which ones should advance, -> for loop advance at each true**/
         /** check if there are no rotors**/
-        Boolean[] flag = new Boolean[_currRotors.length];
-        for(int i =0; i< flag.length; i +=1){
-            flag[i] = false;
-        }
-        int k = numRotors() -1;
-        flag[k] = true; // should always advance
+        Boolean[] flag = new Boolean[_numRotors];
+        int k = numRotors() - 1;
+        flag[k] = true;
 
         if(numRotors() == 0){
             throw new EnigmaException("No rotors!");
         }
-        for(int i = numRotors()-2; i >= 0; i -= 1) {
-//
+        for(int i = numRotors() - 2; i >= 0; i -= 1) {
             /** If I am at a notch and I rotate I should advance and the rotor on my right also advances . **/
-            if(_currRotors[i+1].atNotch() && _currRotors[i].rotates()){
+            if(_currRotors[i + 1].atNotch() && _currRotors[i].rotates()) {
                 if(_currRotors[i+1].rotates())
-                   flag[i+1] = true;
+                   flag[i + 1] = true;
                 flag[i] = true;
             }
+            else {
+                flag[i] = false;
+            }
         }
-        for(int j = 0; j < numRotors(); j +=1){
-            if(flag[j]){
+        int m = numRotors() - numPawls();
+
+        for (int i = m; i < _numRotors;  i += 1) {
+            if (!(_currRotors[i] instanceof MovingRotor)) {
+                throw error("Incorrect order");
+            }
+        }
+        for(int j = 0; j < numRotors(); j += 1) {
+            if(flag[j]) {
                 _currRotors[j].advance();
             }
 

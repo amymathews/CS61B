@@ -34,7 +34,7 @@ class MovingRotor extends Rotor {
 
     @Override
     String notches() {
-        return "";  // FIXME
+        return _notch;  // FIXME
     }
 
     // FIXME: ADDITIONAL FIELDS HERE, AS NEEDED

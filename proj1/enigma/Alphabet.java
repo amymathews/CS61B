@@ -10,7 +10,7 @@ class Alphabet {
      *  K (numbering from 0). No character may be duplicated. */
     Alphabet(String chars) {
         holder = new char[chars.length()];
-        for(int i = 0; i < chars.length(); i+=1) {
+        for (int i = 0; i < chars.length(); i += 1) {
             holder[i] = chars.charAt(i);
         }
     }
@@ -21,13 +21,16 @@ class Alphabet {
     }
 
     /** Returns the size of the alphabet. */
-    int size() { return holder.length; }
+    int size() {
+        return holder.length;
+    }
 
     /** Returns true if CH is in this alphabet. */
     boolean contains(char ch) {
-        for(int i : holder) {
-            if(i == ch)
+        for (int i : holder) {
+            if(i == ch){
                 return true;
+            }
         }
         return false;
     }
@@ -39,10 +42,11 @@ class Alphabet {
     /** Returns the index of character CH which must be in
      *  the alphabet. This is the inverse of toChar(). */
     int toInt(char ch) {
-       for(int i =0; i < holder.length; i+=1)
-           if(holder[i] == ch){
-               return i;
-       }
+        for (int i = 0; i < holder.length; i += 1) {
+            if (holder[i] == ch) {
+                return i;
+            }
+        }
        return -1;
     }
 
