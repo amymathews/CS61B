@@ -3,6 +3,7 @@ package enigma;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Collection;
+import java.util.Iterator;
 
 import static enigma.EnigmaException.*;
 
@@ -19,8 +20,14 @@ class Machine {
         _alphabet = alpha;
         _numRotors = numRotors;
         _pawls = pawls;
-        _allRotors = new ArrayList<>(allRotors);
         _currRotors = new Rotor[numRotors];
+        _allRotors = new HashMap<String, Rotor>();
+
+        Iterator<Rotor> iterator= allRotors.iterator();
+        while (iterator.hasNext()){
+            Rotor temp = iterator.next();
+            _allRotors.put(temp.get_name(), temp);
+        }
         // FIXME
     }
 
@@ -57,15 +64,20 @@ class Machine {
      *  We need to somehow call the name method from rotor here.*/
     void insertRotors(String[] rotors) {
         // FIXME
-        int m = 0;
-        for (String i: rotors) {
-            for (Rotor j: _allRotors) {
-                if (i == j.name()) {
-                    _currRotors[m] = j;
+
+        for(int i = 0; i < rotors.length; i++) {
+            _currRotors[i] = _allRotors.get(rotors[i]);
+        }
+/*        int  m = 0;
+       for (String i: rotors) {
+            for (int j = 0; j < _allRotors.size(); j++){
+                String name = _allRotors.get(j).name();
+                if (i == name) {
+                    _currRotors[m] = _allRotors.get(j);
                  }
              }
             m += 1;
-        }
+        }*/
         if (_currRotors.length != rotors.length) {
             throw new EnigmaException("Missing some rotors");
         }
@@ -205,7 +217,7 @@ class Machine {
     /** number of all pawls possible **/
     private int _pawls;
     /** all possible rotors **/
-    private ArrayList<Rotor> _allRotors;
+    private HashMap<String, Rotor> _allRotors;
     /** current rotors selected by the machine **/
     private Rotor[] _currRotors;
     /** Permutation object to store plugboard **/
