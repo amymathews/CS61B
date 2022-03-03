@@ -98,7 +98,6 @@ public final class Main {
             else {
                 throw new EnigmaException("Wrong format!");
             }
-
         }
 
         // FIXME
@@ -135,19 +134,18 @@ public final class Main {
             String cycles = "";
             String rotortype = (_config.next()).toUpperCase();
             String name = rotortype;
-            String notches = rotortype.substring(1);
+            String notches = name.substring(1);
             /** if the rotortype has something in it, we want to add it to the cycle **/
             while(_config.hasNext("\\(.*\\)")){
                 cycles += _config.next();
             }
-            Permutation permutation =  new Permutation(cycles,_alphabet);
-
-                if (name.charAt(0) == 'R') {
+            Permutation permutation =  new Permutation(cycles, _alphabet);
+                if (name.charAt(0) == 'M') {
+                    return new MovingRotor(name, permutation, notches);
+                } else if (name.charAt(0) == 'R') {
                     return new Reflector(name, permutation);
                 } else if (name.charAt(0) == 'N') {
                     return new FixedRotor(name, permutation);
-                } else if (name.charAt(0) == 'M') {
-                    return new MovingRotor(name, permutation, notches);
                 } else {
                     throw new EnigmaException("No valid rotor found!");
                 }
@@ -159,8 +157,25 @@ public final class Main {
 
     /** Set M according to the specification given on SETTINGS,
      *  which must have the format specified in the assignment.
-     *  parse the in file.*/
+     *  parse the in file.
+     *  set up the Machine object that you created
+     *  in readConfig() as specified by the settings line in the .in file*/
     private void setUp(Machine M, String settings) {
+        Scanner info = new Scanner(settings);
+        String[] rotor_list = new String[M.numRotors()];
+        int i = 0;
+        while (i < M.numRotors()) {
+            rotor_list[i] = info.next();
+            i += 1;
+        }
+        /** check if there is a repeating error **/
+        for(int j = 0; j < rotor_list.length; j += 1) {
+            if (rotor_list[j].equals(rotor_list[j+1])) {
+                throw new EnigmaException("Repeated Rotor!");
+            }
+        }
+
+        M.insertRotors(rotor_list);
         M.setRotors(settings);
         // FIXME
     }
@@ -173,7 +188,16 @@ public final class Main {
     /** Print MSG in groups of five (except that the last group may
      *  have fewer letters). */
     private void printMessageLine(String msg) {
-
+        int counter = 0;
+        for(int i = 0; i < msg.length(); i += 1) {
+            counter += 1;
+            if(counter <= 5) {
+                _output.println(msg.substring(i,i+counter));
+            }
+            else{
+                _output.println(msg.substring(i,i+5) + " ");
+            }
+        }
         // FIXME
     }
 
