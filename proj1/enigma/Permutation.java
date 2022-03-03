@@ -26,7 +26,7 @@ class Permutation {
         permhash = new HashMap<>();
         rpermhash = new HashMap<>();
         data = cycles;
-        data = data.replaceAll("[)(]", "");
+        data = data.replaceAll("[)(]", " ");
         rows = data.split(" ");
 
         for (String row: rows) {

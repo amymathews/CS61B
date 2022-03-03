@@ -118,7 +118,7 @@ public final class Main {
         try {
             // FIXME
             String text = _config.next();
-            _alphabet = new Alphabet();
+            _alphabet = new Alphabet(text);
             int numRotors = _config.nextInt();
             int numPawls = _config.nextInt();
             allRotors = new ArrayList<>();
@@ -148,7 +148,7 @@ public final class Main {
             }
             Permutation permutation =  new Permutation(cycles, _alphabet);
                 if (rotortype.charAt(0) == 'M') {
-                    String notches = name.substring(1);
+                    String notches = rotortype.substring(1);
                     return new MovingRotor(name, permutation, notches);
                 } else if (rotortype.charAt(0) == 'R') {
                     return new Reflector(name, permutation);
@@ -183,6 +183,15 @@ public final class Main {
             rotor_list[i] = info.next();
             i += 1;
         }
+
+        if(settingInput.length() != M.numRotors()-1){
+            throw new EnigmaException("wrong setting input, length is not correct.");
+        }
+        for(int s = 0; s < settingInput.length(); s += 1 ){
+            if(!_alphabet.contains(settingInput.charAt(s))){
+                throw new EnigmaException("wrong setting input, letter not present.");
+            }
+        }
         /** check if there is a repeating error **/
         for(int j = 0; j < rotor_list.length-1; j += 1) {
             for (int k = j + 1; k < rotor_list.length; k += 1) {
@@ -191,10 +200,11 @@ public final class Main {
                 }
             }
         }
-        /** Need to update settings **/
-        for (int k = M.numRotors() + 2; k < rotor_list.length; k++) {
-            cycles += rotor_list[k];
-        }
+//        int l = M.numRotors() +2;
+//        for(; l < setA.length; l += 1){
+//            cycles += setA[i];
+//        }
+
         Permutation perm = new Permutation(cycles, _alphabet);
 
         M.setPlugboard(perm);
@@ -213,13 +223,13 @@ public final class Main {
      *  have fewer letters). */
     private void printMessageLine(String msg) {
         int counter = 0;
-        for(int i = 0; i < msg.length(); i += 1) {
-            counter += 1;
-            if(counter <= 5) {
-                _output.println(msg.substring(i, i + counter));
-            }
-            else{
+        for(int i = 0; i < msg.length(); i += 5) {
+//            counter += 1;
+            if(i + 5 < msg.length()) {
                 _output.println(msg.substring(i, i + 5) + " ");
+            }
+            else {
+                _output.println(msg.substring(i));
             }
         }
         // FIXME

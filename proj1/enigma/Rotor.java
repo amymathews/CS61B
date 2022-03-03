@@ -63,20 +63,45 @@ class Rotor {
         // FIXME
     }
 
+
     /** Return the conversion of P (an integer in the range 0..size()-1)
      *  according to my permutation. */
     int convertForward(int p) {
         // FIXME
-        int conF = _permutation.permute(_permutation.wrap(_setting + p));
-        return _permutation.wrap(conF -_setting);
+        int conF = _permutation.permute(_setting + p);
+        int result;
+        if(conF < _setting){
+            result = conF -_setting + size();
+        }
+        else{
+            result = conF - _setting;
+        }
+        if (Main.verbose()) {
+            System.err.printf("%c -> ", alphabet().toChar(p));
+        }
+        return result;
+//        int conF = _permutation.permute(_permutation.wrap(_setting + p));
+//        return _permutation.wrap(conF -_setting);
     }
 
     /** Return the conversion of E (an integer in the range 0..size()-1)
      *  according to the inverse of my permutation. */
     int convertBackward(int e) {
         // FIXME
-        int conB = _permutation.invert(_permutation.wrap(_setting + e));
-        return _permutation.wrap(conB - _setting);
+        int conB = _permutation.invert(e + setting());
+        int result;
+        if(conB <_setting){
+            result = conB - _setting +size();
+        }
+        else{
+            result = conB - _setting;
+        }
+        if (Main.verbose()) {
+            System.err.printf("%c -> ", alphabet().toChar(e));
+        }
+        return result;
+//        int conB = _permutation.invert(_permutation.wrap(_setting + e));
+//        return _permutation.wrap(conB - _setting);
     }
 
     /** Returns the positions of the notches, as a string giving the letters
