@@ -27,7 +27,6 @@ class Machine {
             Rotor temp = iterator.next();
             _allRotors.put(temp.getName(), temp);
         }
-        // FIXME
     }
 
     /** Return the number of rotor slots I have. */
@@ -40,7 +39,6 @@ class Machine {
     int numPawls() {
 
         return _pawls;
-        // FIXME
     }
 
     /** Return Rotor #K, where Rotor #0 is the reflector, and Rotor
@@ -49,7 +47,7 @@ class Machine {
     Rotor getRotor(int k) {
 
         return _currRotors[k];
-        // FIXME
+
     }
 
     Alphabet alphabet() {
@@ -64,65 +62,52 @@ class Machine {
      *  We are updating _currRotors here
      *  We need to somehow call the name method from rotor here.*/
     void insertRotors(String[] rotors) {
-        // FIXME
-        int counter =0;
+
+        int counter = 0;
 
         for (int i = 0; i < rotors.length; i += 1) {
             _currRotors[i] = _allRotors.get(rotors[i]);
         }
-        for(int i =0; i < numRotors(); i +=1){
-            if(_currRotors[i].rotates()){
+        for (int i = 0; i < numRotors(); i += 1) {
+            if (_currRotors[i].rotates()) {
                 counter += 1;
             }
         }
-        if(counter != numPawls()){
+        if (counter != numPawls()) {
             throw new EnigmaException("There should be an reflector! ");
         }
-
         if (_currRotors.length != rotors.length) {
             throw new EnigmaException("Missing some rotors");
         }
-        /*        int  m = 0;
-       for (String i: rotors) {
-            for (int j = 0; j < _allRotors.size(); j++){
-                String name = _allRotors.get(j).name();
-                if (i == name) {
-                    _currRotors[m] = _allRotors.get(j);
-                 }
-             }
-            m += 1;
-        }*/
     }
 
     /** Set my rotors according to SETTING, which must be a string of
      *  numRotors()-1 characters in my alphabet. The first letter refers
      *  to the leftmost rotor setting (not counting the reflector).  */
     void setRotors(String setting) {
-        // FIXME
+
         if (setting.length() != numRotors() - 1) {
-            throw new EnigmaException("setting does not match with number of rotors");
+            throw new EnigmaException("setting does not match"
+                    + " with number of rotors");
         }
         if (setting.length() == numRotors() - 1) {
             for (int i = 1; i < _currRotors.length; i += 1) {
-//                if (!_alphabet.contains(setting.charAt(i - 1))) {
-//                    throw new EnigmaException("no such setting");
-//                } else {
-                    _currRotors[i].set(setting.charAt(i - 1));
-//                }
+                _currRotors[i].set(setting.charAt(i - 1));
             }
         } else {
-            throw new EnigmaException("setting length does not match conditions");
+            throw new EnigmaException("setting length does not "
+                    + "match conditions");
         }
     }
 
     /** Return the current plugboard's permutation. */
     Permutation plugboard() {
-        return this._plugboard; // FIXME
+        return this._plugboard;
     }
 
     /** Set the plugboard to PLUGBOARD. */
     void setPlugboard(Permutation plugboard) {
-        _plugboard = plugboard; // FIXME
+        _plugboard = plugboard;
     }
 
     /** Returns the result of converting the input character C (as an
@@ -172,7 +157,6 @@ class Machine {
             }
         }
         int m = numRotors() - numPawls();
-
         for (int i = m; i < _numRotors;  i += 1) {
             if (!(_currRotors[i] instanceof MovingRotor)) {
                 throw error("Incorrect order");
@@ -184,7 +168,6 @@ class Machine {
             }
         }
 
-        // FIXME
     }
 
     /** Return the result of applying the rotors to the character C (as an
@@ -193,35 +176,32 @@ class Machine {
      *  end of array -> to front got covertforward method
      *  front -> the back convertbackward.*/
     private int applyRotors(int c) {
-        int _result = c;
+        int result = c;
 
         for (int i = _numRotors - 1; i >= 0; i -= 1) {
-            _result = _currRotors[i].convertForward(_result);
+            result = _currRotors[i].convertForward(result);
         }
 
         for (int j = 1; j < _numRotors; j += 1) {
-            _result = _currRotors[j].convertBackward(_result);
+            result = _currRotors[j].convertBackward(result);
         }
-        return _result; // FIXME
+        return result;
     }
 
     /** Returns the encoding/decoding of MSG, updating the state of
      *  the rotors accordingly.
-     *  what is a string builder?
-     *  Build a string all of versions of alphabhet
-     *  take indvividual characters of msg and convert wheters a part alaphabhet or not (user convert int)*/
+     **/
     String convert(String msg) {
         String retString = "";
         for (int i = 0; i < msg.length(); i += 1) {
-            retString += _alphabet.toChar(convert(_alphabet.toInt(msg.charAt(i))));
+            retString += _alphabet.toChar(
+                    convert(_alphabet.toInt(msg.charAt(i))));
         }
-        return retString; // FIXME
+        return retString;
     }
 
     /** Common alphabet of my rotors. */
     private final Alphabet _alphabet;
-
-    // FIXME: ADDITIONAL FIELDS HERE, IF NEEDED.
     /** number of all rotors possible. **/
     private int _numRotors;
     /** number of all pawls possible. **/

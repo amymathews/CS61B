@@ -1,11 +1,6 @@
 package enigma;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 
-import static enigma.EnigmaException.*;
 
 /** Represents a permutation of a range of integers starting at 0 corresponding
  *  to the characters of an alphabet.
@@ -17,8 +12,7 @@ class Permutation {
      *  form "(cccc) (cc) ..." where the c's are characters in ALPHABET, which
      *  is interpreted as a permutation in cycle notation.  Characters in the
      *  alphabet that are not included in any cycle map to themselves.
-     *  Whitespace is ignored.
-     *  I want to get rid of the brackets and whitespaces first*/
+     *  Whitespace is ignored.*/
     Permutation(String cycles, Alphabet alphabet) {
         String[] rows;
         String data;
@@ -32,8 +26,6 @@ class Permutation {
         for (String row: rows) {
             addCycle(row);
         }
-
-        // FIXME
     }
 
     /** Add the cycle c0->c1->...->cm->c0 to the permutation, where CYCLE is
@@ -41,7 +33,6 @@ class Permutation {
      *  _alphabet of this permutation
      *  alphabet used to initialize this permutation.*/
     private void addCycle(String cycle) {
-        // FIXME
 
         for (int i = 0; i < cycle.length(); i += 1) {
             if (cycle.length() < 1) {
@@ -64,7 +55,6 @@ class Permutation {
                 rpermhash.put(_alphabet.toChar(i), _alphabet.toChar(i));
             }
         }
-        // FIXME
     }
 
     /** Return the value of P modulo the size of this permutation. */
@@ -78,37 +68,39 @@ class Permutation {
 
     /** Returns the size of the alphabet I permute. */
     int size() {
-        return _alphabet.size(); // FIXME
+        return _alphabet.size();
     }
 
     /** Return the result of applying this permutation to P modulo the
      *  alphabet size.*/
     int permute(int p) {
+
         char index = _alphabet.toChar(wrap(p));
-        return _alphabet.toInt(permhash.get(index)); // FIXME
+        return _alphabet.toInt(permhash.get(index));
     }
 
     /** Return the result of applying the inverse of this permutation
      *  to  C modulo the alphabet size. */
     int invert(int c) {
-           // FIXME
+
         char index = _alphabet.toChar(wrap(c));
         return _alphabet.toInt(rpermhash.get(index));
-//        return rpermhash.get(wrap(c));
+
     }
 
     /** Return the result of applying this permutation to the index of P
      *  in ALPHABET, and converting the result to a character of ALPHABET. */
     char permute(char p) {
-//        // FIXME
+
         return permhash.get(p);
 
     }
 
     /** Return the result of applying the inverse of this permutation to C. */
     char invert(char c) {
+
         return rpermhash.get(c);
-// FIXME
+
     }
 
     /** Return the alphabet used to initialize this Permutation. */
@@ -128,7 +120,7 @@ class Permutation {
                 }
             }
         }
-        return true;  // FIXME
+        return true;
     }
 
     /** Alphabet of this permutation. */

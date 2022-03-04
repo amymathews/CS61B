@@ -15,29 +15,26 @@ class MovingRotor extends Rotor {
     MovingRotor(String name, Permutation perm, String notches) {
         super(name, perm);
         _notch = notches;
-        // FIXME
     }
 
-    // FIXME?
     @Override
     boolean rotates() {
         return true;
     }
 
     @Override
-    /**we should be advancing one at a time then set the position to it, so we can call set defined in parent class **/
     void advance() {
         int advance = permutation().wrap(setting() + 1);
         super.set(advance);
-        // FIXME
+
     }
 
     @Override
     String notches() {
-        return _notch;  // FIXME
+        return _notch;
     }
 
-    // FIXME: ADDITIONAL FIELDS HERE, AS NEEDED
+    /** keeps track of notch.**/
     private String _notch;
 
 }

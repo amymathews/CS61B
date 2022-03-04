@@ -13,6 +13,4 @@ class FixedRotor extends Rotor {
 
         super(name, perm);
     }
-
-    // FIXME ?
 }

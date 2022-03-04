@@ -53,6 +53,6 @@ class Alphabet {
     }
 
     /** instance variables. */
-    public char[] holder;
+    private char[] holder;
 
 }
