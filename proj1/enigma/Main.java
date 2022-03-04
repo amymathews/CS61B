@@ -86,13 +86,6 @@ public final class Main {
         String _setting = _input.nextLine();
         String msg = "";
         int counter = 0;
-//        rotortype.charAt(0);
-//////        this.rotortype = _config.next();
-////        for (int i = 0; i < rotortype.length(); i += 1) {
-////            if (rotortype.charAt(0)){
-////                counter += 1;
-////            }
-////        }
 
         if (_setting.contains("*")) {
             if (counter > _numPawls) {
@@ -126,14 +119,16 @@ public final class Main {
             _alphabet = new Alphabet(text);
             int numRotors = _config.nextInt();
             int numPawls = _config.nextInt();
+            int counter = 0;
             allRotors = new ArrayList<>();
-            if (text.contains("(") | text.contains(")") | text.contains("*")) {
+            if (text.contains("(") | text.contains(")") | text.contains("*") | text.contains("/d")) {
                 throw new EnigmaException("Wrong configuration format!");
             }
-            _alphabet = new Alphabet(text);
+//            _alphabet = new Alphabet(text);
             if (_config.hasNextInt()) {
                 throw new EnigmaException(" Wrong configuration format!");
             }
+
 
             while (_config.hasNext()) {
                 allRotors.add(readRotor());
@@ -186,23 +181,21 @@ public final class Main {
         String[] rotor_list = new String[M.numRotors()];
         String cycles = "";
         String[] setA = settings.split(" ");
-        String settingInput = setA[setA.length - 1];
+
 //        settingInput = settingInput.replaceAll("[()]","");
 
         if (!setA[0].equals("*")) {
             throw new EnigmaException("Settings must start with *!");
         }
-//        for(String s: setA) {
-//            for(char c: s.toCharArray()){
-//                if(Character.isDigit(c)){
-//                throw new EnigmaException("wrong setting input, numbers not allowed");
-//                 }
-//             }
-//        }
+
+        if (M.numRotors()+2 > setA.length) {
+            throw new EnigmaException("wrong number of rotors");
+        }
+        String settingInput = setA[_numRotors + 1];
         if(settingInput.length() > rotor_list.length){
             throw new EnigmaException(" invalid setting passed");
         }
-        if (setA.length - 2 < M.numRotors()) {
+        if (setA.length - 1 < M.numRotors()) {
             throw new EnigmaException("Too few arguments");
         }
         int i = 0;
@@ -211,6 +204,9 @@ public final class Main {
             rotor_list[i] = info.next();
             i += 1;
         }
+//        if(rotor_list.length != settingInput.length()){
+//            throw new EnigmaException("Wrong number of arguments");
+//        }
 
 //        if(settingInput.length() > rotor_list.length){
 //            throw new EnigmaException(" invalid setting passed");
@@ -224,9 +220,9 @@ public final class Main {
 //            i += 1;
 //        }
 //
-//        if(settingInput.length() > rotor_list.length){
-//            throw new EnigmaException(" invalid setting passed");
-//        }
+        if(settingInput.length() > rotor_list.length){
+            throw new EnigmaException(" invalid setting passed");
+        }
 
         if (settingInput.length() != M.numRotors() - 1) {
             throw new EnigmaException("wrong setting input, length is not correct.");
@@ -244,8 +240,10 @@ public final class Main {
                 }
             }
         }
-        /** check if the first rotor is fixed**/
 
+        for(int l = _numRotors + 2; l < setA.length; l += 1){
+            cycles += setA[l];
+        }
         Permutation perm = new Permutation(cycles, _alphabet);
         M.setPlugboard(perm);
         M.insertRotors(rotor_list);
