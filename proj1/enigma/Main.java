@@ -92,9 +92,19 @@ public final class Main {
         Machine obj = readConfig();
         String _setting = _input.nextLine();
         String msg = "";
-
+        int counter = 0;
+//        for(int i = 0; i < _numRotors; i += 1 ){
+//            if(){
+//                counter += 1;
+//            }
+//        }
         if (_setting.contains("*")) {
-            setUp(obj, _setting);
+            if(counter > _numPawls){
+                throw new EnigmaException("Too many moving rotors");
+            }
+            else {
+                setUp(obj, _setting);
+            }
         } else {
             throw error("Wrong setting!");
         }
@@ -102,6 +112,9 @@ public final class Main {
             _setting = _input.nextLine();
             if (_setting.contains("*")) {
                 setUp(obj, _setting);
+            }
+            else if( _setting.equals("")){
+                _output.println();
             }
             else {
                 msg = obj.convert(_setting.replaceAll(" ", ""));
@@ -133,6 +146,9 @@ public final class Main {
             while(_config.hasNext()){
                 allRotors.add(readRotor());
             }
+            this._numPawls = numPawls;
+            this._numRotors = numRotors;
+
             return new Machine(_alphabet, numRotors, numPawls, allRotors);
         } catch (NoSuchElementException excp) {
             throw error("configuration file truncated");
@@ -254,6 +270,9 @@ public final class Main {
 
     /** True if --verbose specified. */
     private static boolean _verbose;
+
+    private int _numRotors;
+    private int _numPawls;
 
     private ArrayList allRotors = new ArrayList<>();
 }
