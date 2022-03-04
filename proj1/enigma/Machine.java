@@ -1,6 +1,5 @@
 package enigma;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Collection;
 import java.util.Iterator;
@@ -8,7 +7,7 @@ import java.util.Iterator;
 import static enigma.EnigmaException.*;
 
 /** Class that represents a complete enigma machine.
- *  @author
+ *  @author Amy Mathews
  */
 class Machine {
 
@@ -23,10 +22,10 @@ class Machine {
         _currRotors = new Rotor[numRotors];
         _allRotors = new HashMap<String, Rotor>();
 
-        Iterator<Rotor> iterator= allRotors.iterator();
-        while (iterator.hasNext()){
+        Iterator<Rotor> iterator = allRotors.iterator();
+        while (iterator.hasNext()) {
             Rotor temp = iterator.next();
-            _allRotors.put(temp.get_name(), temp);
+            _allRotors.put(temp.getName(), temp);
         }
         // FIXME
     }
@@ -40,7 +39,8 @@ class Machine {
     /** Return the number pawls (and thus rotating rotors) I have. */
     int numPawls() {
 
-        return _pawls; // FIXME
+        return _pawls;
+        // FIXME
     }
 
     /** Return Rotor #K, where Rotor #0 is the reflector, and Rotor
@@ -48,7 +48,8 @@ class Machine {
      *  undefined results. */
     Rotor getRotor(int k) {
 
-        return _currRotors[k]; // FIXME
+        return _currRotors[k];
+        // FIXME
     }
 
     Alphabet alphabet() {
@@ -65,7 +66,7 @@ class Machine {
     void insertRotors(String[] rotors) {
         // FIXME
 
-        for(int i = 0; i < rotors.length; i++) {
+        for (int i = 0; i < rotors.length; i += 1) {
             _currRotors[i] = _allRotors.get(rotors[i]);
         }
 /*        int  m = 0;
@@ -88,27 +89,30 @@ class Machine {
      *  to the leftmost rotor setting (not counting the reflector).  */
     void setRotors(String setting) {
         // FIXME
-        if (setting.length() == numRotors() - 1) {
-            for (int i = 1; i < _currRotors.length; i +=1 ) {
-                if (!_alphabet.contains(setting.charAt(i-1))) {
-                    throw new EnigmaException("no such setting");
-                }
-                _currRotors[i].set(setting.charAt(i-1));
-            }
+        if (setting.length() != numRotors() - 1) {
+            throw new EnigmaException("setting does not match with number of rotors");
         }
-        else {
+        if (setting.length() == numRotors() - 1) {
+            for (int i = 1; i < _currRotors.length; i += 1) {
+//                if (!_alphabet.contains(setting.charAt(i - 1))) {
+//                    throw new EnigmaException("no such setting");
+//                } else {
+                    _currRotors[i].set(setting.charAt(i - 1));
+//                }
+            }
+        } else {
             throw new EnigmaException("setting length does not match conditions");
         }
     }
 
     /** Return the current plugboard's permutation. */
     Permutation plugboard() {
-        return this._plugboard;// FIXME
+        return this._plugboard; // FIXME
     }
 
     /** Set the plugboard to PLUGBOARD. */
     void setPlugboard(Permutation plugboard) {
-        _plugboard = plugboard;// FIXME
+        _plugboard = plugboard; // FIXME
     }
 
     /** Returns the result of converting the input character C (as an
@@ -140,8 +144,6 @@ class Machine {
      * here we must check for double stepping*/
     private void advanceRotors() {
 
-        /**  boolean array that holds which ones should advance, -> for loop advance at each true**/
-        /** check if there are no rotors**/
         Boolean[] flag = new Boolean[_numRotors];
         int k = numRotors() - 1;
         flag[k] = true;
@@ -150,13 +152,12 @@ class Machine {
             throw new EnigmaException("No rotors!");
         }
         for (int i = numRotors() - 2; i >= 0; i -= 1) {
-            /** If I am at a notch and I rotate I should advance and the rotor on my right also advances . **/
             if (_currRotors[i + 1].atNotch() && _currRotors[i].rotates()) {
-                if (_currRotors[i+1].rotates())
-                   flag[i + 1] = true;
+                if (_currRotors[i + 1].rotates()) {
+                    flag[i + 1] = true;
+                }
                 flag[i] = true;
-            }
-            else {
+            } else {
                 flag[i] = false;
             }
         }
@@ -167,8 +168,8 @@ class Machine {
                 throw error("Incorrect order");
             }
         }
-        for(int j = 0; j < numRotors(); j += 1) {
-            if(flag[j]) {
+        for (int j = 0; j < numRotors(); j += 1) {
+            if (flag[j]) {
                 _currRotors[j].advance();
             }
         }
@@ -183,12 +184,11 @@ class Machine {
      *  front -> the back convertbackward.*/
     private int applyRotors(int c) {
         int _result = c;
-        /** convert forward first**/
 
         for (int i = _numRotors - 1; i >= 0; i -= 1) {
             _result = _currRotors[i].convertForward(_result);
         }
-        /** going after the reflector, so start at one, convert backwards**/
+
         for (int j = 1; j < _numRotors; j += 1) {
             _result = _currRotors[j].convertBackward(_result);
         }
@@ -201,25 +201,25 @@ class Machine {
      *  Build a string all of versions of alphabhet
      *  take indvividual characters of msg and convert wheters a part alaphabhet or not (user convert int)*/
     String convert(String msg) {
-        String _retString = "";
-        for (int i = 0; i< msg.length(); i += 1) {
-            _retString += _alphabet.toChar(convert(_alphabet.toInt(msg.charAt(i))));
+        String retString = "";
+        for (int i = 0; i < msg.length(); i += 1) {
+            retString += _alphabet.toChar(convert(_alphabet.toInt(msg.charAt(i))));
         }
-        return _retString; // FIXME
+        return retString; // FIXME
     }
 
     /** Common alphabet of my rotors. */
     private final Alphabet _alphabet;
 
     // FIXME: ADDITIONAL FIELDS HERE, IF NEEDED.
-    /** number of all rotors possible **/
+    /** number of all rotors possible. **/
     private int _numRotors;
-    /** number of all pawls possible **/
+    /** number of all pawls possible. **/
     private int _pawls;
-    /** all possible rotors **/
+    /** all possible rotors. **/
     private HashMap<String, Rotor> _allRotors;
-    /** current rotors selected by the machine **/
+    /** current rotors selected by the machine. **/
     private Rotor[] _currRotors;
-    /** Permutation object to store plugboard **/
+    /** Permutation object to store plugboard. **/
     private Permutation _plugboard;
 }

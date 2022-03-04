@@ -52,7 +52,7 @@ class Alphabet {
         return -1;
     }
 
-/** instance variables. */
-public char[] holder;
+    /** instance variables. */
+    public char[] holder;
 
 }

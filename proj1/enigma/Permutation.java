@@ -43,7 +43,7 @@ class Permutation {
     private void addCycle(String cycle) {
         // FIXME
 
-        for (int i = 0; i < cycle.length(); i +=1) {
+        for (int i = 0; i < cycle.length(); i += 1) {
             if (cycle.length() < 1) {
                 permhash.put(cycle.charAt(i), cycle.charAt(i));
                 rpermhash.put(cycle.charAt(i), cycle.charAt(i));
@@ -61,7 +61,7 @@ class Permutation {
                 permhash.put(_alphabet.toChar(i), _alphabet.toChar(i));
             }
             if (!rpermhash.containsKey(c)) {
-                rpermhash.put(_alphabet.toChar(i),_alphabet.toChar(i));
+                rpermhash.put(_alphabet.toChar(i), _alphabet.toChar(i));
             }
         }
         // FIXME
@@ -133,11 +133,9 @@ class Permutation {
 
     /** Alphabet of this permutation. */
     private Alphabet _alphabet;
-    /** String to cycles**/
-    private String data;
     /** Hold forward permutation. **/
     private HashMap<Character, Character> permhash;
-    /**Hold backward permutation. **/
+    /** Hold backward permutation. **/
     private HashMap<Character, Character> rpermhash;
 
 }

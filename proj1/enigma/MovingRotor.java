@@ -3,7 +3,7 @@ package enigma;
 import static enigma.EnigmaException.*;
 
 /** Class that represents a rotating rotor in the enigma machine.
- *  @author
+ *  @author Amy Mathews
  */
 class MovingRotor extends Rotor {
 
@@ -27,8 +27,8 @@ class MovingRotor extends Rotor {
     @Override
     /**we should be advancing one at a time then set the position to it, so we can call set defined in parent class **/
     void advance() {
-        int _advance = permutation().wrap(setting() + 1);
-        super.set(_advance);
+        int advance = permutation().wrap(setting() + 1);
+        super.set(advance);
         // FIXME
     }
 

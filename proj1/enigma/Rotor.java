@@ -1,9 +1,7 @@
 package enigma;
 
-import static enigma.EnigmaException.*;
-
 /** Superclass that represents a rotor in the enigma machine.
- *  @author
+ *  @author Amy Mathews
  */
 class Rotor {
 
@@ -16,7 +14,7 @@ class Rotor {
     }
 
     /** Return my name. */
-    String get_name() {
+    String getName() {
         return _name;
     }
 
@@ -70,10 +68,9 @@ class Rotor {
         // FIXME
         int conF = _permutation.permute(_setting + p);
         int result;
-        if(conF < _setting){
+        if (conF < _setting) {
             result = conF -_setting + size();
-        }
-        else{
+        } else {
             result = conF - _setting;
         }
         if (Main.verbose()) {
@@ -90,10 +87,9 @@ class Rotor {
         // FIXME
         int conB = _permutation.invert(e + setting());
         int result;
-        if(conB <_setting){
-            result = conB - _setting +size();
-        }
-        else{
+        if(conB < _setting){
+            result = conB - _setting + size();
+        } else {
             result = conB - _setting;
         }
         if (Main.verbose()) {
@@ -136,6 +132,7 @@ class Rotor {
     private Permutation _permutation;
 
     // FIXME: ADDITIONAL FIELDS HERE, AS NEEDED
+    /** settng for the permutation. **/
     private int _setting;
 
 }

@@ -14,9 +14,6 @@ import static enigma.EnigmaException.*;
  *  @author Amy Mathews
  */
 public final class Main {
-    /** parese in and conf files
-     * buidl machine according to specifiaction,
-     * encrypt provided message**/
 
     /** Process a sequence of encryptions and decryptions, as
      *  specified by ARGS, where 1 <= ARGS.length <= 3.
@@ -83,26 +80,24 @@ public final class Main {
 
     /** Configure an Enigma machine from the contents of configuration
      *  file _config and apply it to the messages in _input, sending the
-     *  results to _output.
-     *  hub of machine
-     *  call other methods here
-     *  encrypt message in process
-     *  encrypt and output*/
+     *  results to _output. **/
     private void process() {
         Machine obj = readConfig();
         String _setting = _input.nextLine();
         String msg = "";
         int counter = 0;
-//        for(int i = 0; i < _numRotors; i += 1 ){
-//            if(){
-//                counter += 1;
-//            }
-//        }
+//        rotortype.charAt(0);
+//////        this.rotortype = _config.next();
+////        for (int i = 0; i < rotortype.length(); i += 1) {
+////            if (rotortype.charAt(0)){
+////                counter += 1;
+////            }
+////        }
+
         if (_setting.contains("*")) {
-            if(counter > _numPawls){
+            if (counter > _numPawls) {
                 throw new EnigmaException("Too many moving rotors");
-            }
-            else {
+            } else {
                 setUp(obj, _setting);
             }
         } else {
@@ -112,11 +107,9 @@ public final class Main {
             _setting = _input.nextLine();
             if (_setting.contains("*")) {
                 setUp(obj, _setting);
-            }
-            else if( _setting.equals("")){
+            } else if ( _setting.equals("")) {
                 _output.println();
-            }
-            else {
+            } else {
                 msg = obj.convert(_setting.replaceAll(" ", ""));
                 printMessageLine(msg);
             }
@@ -125,8 +118,7 @@ public final class Main {
     }
 
     /** Return an Enigma machine configured from the contents of configuration
-     *  file _config.
-     *  parse through the _config file*/
+     *  file _config. **/
     private Machine readConfig() {
         try {
             // FIXME
@@ -139,11 +131,11 @@ public final class Main {
                 throw new EnigmaException("Wrong configuration format!");
             }
             _alphabet = new Alphabet(text);
-            if(_config.hasNextInt()){
+            if (_config.hasNextInt()) {
                 throw new EnigmaException(" Wrong configuration format!");
             }
 
-            while(_config.hasNext()){
+            while (_config.hasNext()) {
                 allRotors.add(readRotor());
             }
             this._numPawls = numPawls;
@@ -155,29 +147,29 @@ public final class Main {
         }
     }
 
-    /** Return a rotor, reading its description from _config.
-     * helper function to readconfig */
+    /** Return a rotor, reading its description from _config. **/
     private Rotor readRotor() {
         try {
             // FIXME
             String cycles = "";
             String name = (_config.next());
             String rotortype = _config.next();
-            /** if the rotortype has something in it, we want to add it to the cycle **/
-            while(_config.hasNext("\\(.*\\)")){
+            int counter =0;
+            while (_config.hasNext("\\(.*\\)")) {
                 cycles += _config.next();
             }
+
             Permutation permutation =  new Permutation(cycles, _alphabet);
-                if (rotortype.charAt(0) == 'M') {
-                    String notches = rotortype.substring(1);
-                    return new MovingRotor(name, permutation, notches);
-                } else if (rotortype.charAt(0) == 'R') {
-                    return new Reflector(name, permutation);
-                } else if (rotortype.charAt(0) == 'N') {
-                    return new FixedRotor(name, permutation);
-                } else {
-                    throw new EnigmaException("No valid rotor found!");
-                }
+            if (rotortype.charAt(0) == 'M') {
+                String notches = rotortype.substring(1);
+                return new MovingRotor(name, permutation, notches);
+            } else if (rotortype.charAt(0) == 'R') {
+                return new Reflector(name, permutation);
+            } else if (rotortype.charAt(0) == 'N') {
+                return new FixedRotor(name, permutation);
+            } else {
+                throw new EnigmaException("No valid rotor found!");
+            }
 
         } catch (NoSuchElementException excp) {
             throw error("bad rotor description");
@@ -194,31 +186,58 @@ public final class Main {
         String[] rotor_list = new String[M.numRotors()];
         String cycles = "";
         String[] setA = settings.split(" ");
-        String settingInput = setA[setA.length-1];
+        String settingInput = setA[setA.length - 1];
+//        settingInput = settingInput.replaceAll("[()]","");
 
-        if(!setA[0].equals("*")){
+        if (!setA[0].equals("*")) {
             throw new EnigmaException("Settings must start with *!");
         }
-        int i = 0;
-        if(setA.length - 2 < M.numRotors()){
+//        for(String s: setA) {
+//            for(char c: s.toCharArray()){
+//                if(Character.isDigit(c)){
+//                throw new EnigmaException("wrong setting input, numbers not allowed");
+//                 }
+//             }
+//        }
+        if(settingInput.length() > rotor_list.length){
+            throw new EnigmaException(" invalid setting passed");
+        }
+        if (setA.length - 2 < M.numRotors()) {
             throw new EnigmaException("Too few arguments");
         }
+        int i = 0;
         info.next();
         while (i < M.numRotors()) {
             rotor_list[i] = info.next();
             i += 1;
         }
 
-        if(settingInput.length() != M.numRotors()-1){
+//        if(settingInput.length() > rotor_list.length){
+//            throw new EnigmaException(" invalid setting passed");
+//        }
+//        if (setA.length - 2 < M.numRotors()) {
+//            throw new EnigmaException("Too few arguments");
+//        }
+//        info.next();
+//        while (i < M.numRotors()) {
+//            rotor_list[i] = info.next();
+//            i += 1;
+//        }
+//
+//        if(settingInput.length() > rotor_list.length){
+//            throw new EnigmaException(" invalid setting passed");
+//        }
+
+        if (settingInput.length() != M.numRotors() - 1) {
             throw new EnigmaException("wrong setting input, length is not correct.");
         }
-        for(int s = 0; s < settingInput.length(); s += 1 ){
-            if(!_alphabet.contains(settingInput.charAt(s))){
+        for (int s = 0; s < settingInput.length(); s += 1) {
+            if (!_alphabet.contains(settingInput.charAt(s))) {
                 throw new EnigmaException("wrong setting input, letter not present.");
             }
         }
         /** check if there is a repeating error **/
-        for(int j = 0; j < rotor_list.length-1; j += 1) {
+        for (int j = 0; j < rotor_list.length - 1; j += 1) {
             for (int k = j + 1; k < rotor_list.length; k += 1) {
                 if (rotor_list[j].equals(rotor_list[k])) {
                     throw new EnigmaException("rotor is repeated!");
@@ -244,11 +263,10 @@ public final class Main {
      *  have fewer letters). */
     private void printMessageLine(String msg) {
 //        int counter = 0;
-        for(int i = 0; i < msg.length(); i += 5) {
-            if(i + 5 < msg.length()) {
+        for (int i = 0; i < msg.length(); i += 5) {
+            if (i + 5 < msg.length()) {
                 _output.print(msg.substring(i, i + 5) + " ");
-            }
-            else {
+            } else {
                 _output.println(msg.substring(i));
             }
 //            _output.println(msg.substring(i));
@@ -270,9 +288,12 @@ public final class Main {
 
     /** True if --verbose specified. */
     private static boolean _verbose;
-
+    /** number of rotors. **/
     private int _numRotors;
+    /** number of pawls. **/
     private int _numPawls;
-
+    /** all available rotors. **/
     private ArrayList allRotors = new ArrayList<>();
+    /** all rotors used in input files. **/
+    private String rotortype;
 }

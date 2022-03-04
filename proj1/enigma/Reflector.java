@@ -3,7 +3,7 @@ package enigma;
 import static enigma.EnigmaException.*;
 
 /** Class that represents a reflector in the enigma.
- *  @author
+ *  @author Amy Mathews
  */
 class Reflector extends FixedRotor {
 
@@ -15,7 +15,6 @@ class Reflector extends FixedRotor {
     }
 
     @Override
-    /** Reflector only reflects**/
     boolean reflecting() {
 
         return true;
