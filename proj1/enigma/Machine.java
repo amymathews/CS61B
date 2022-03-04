@@ -65,11 +65,24 @@ class Machine {
      *  We need to somehow call the name method from rotor here.*/
     void insertRotors(String[] rotors) {
         // FIXME
+        int counter =0;
 
         for (int i = 0; i < rotors.length; i += 1) {
             _currRotors[i] = _allRotors.get(rotors[i]);
         }
-/*        int  m = 0;
+        for(int i =0; i < numRotors(); i +=1){
+            if(_currRotors[i].rotates()){
+                counter += 1;
+            }
+        }
+        if(counter != numPawls()){
+            throw new EnigmaException("There should be an reflector! ");
+        }
+
+        if (_currRotors.length != rotors.length) {
+            throw new EnigmaException("Missing some rotors");
+        }
+        /*        int  m = 0;
        for (String i: rotors) {
             for (int j = 0; j < _allRotors.size(); j++){
                 String name = _allRotors.get(j).name();
@@ -79,9 +92,6 @@ class Machine {
              }
             m += 1;
         }*/
-        if (_currRotors.length != rotors.length) {
-            throw new EnigmaException("Missing some rotors");
-        }
     }
 
     /** Set my rotors according to SETTING, which must be a string of

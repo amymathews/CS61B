@@ -124,15 +124,15 @@ public final class Main {
             if (text.contains("(") | text.contains(")") | text.contains("*") | text.contains("/d")) {
                 throw new EnigmaException("Wrong configuration format!");
             }
-//            _alphabet = new Alphabet(text);
             if (_config.hasNextInt()) {
                 throw new EnigmaException(" Wrong configuration format!");
             }
 
-
             while (_config.hasNext()) {
-                allRotors.add(readRotor());
+                allRotors.add(readRotor(counter, numRotors));
+                counter += 1;
             }
+
             this._numPawls = numPawls;
             this._numRotors = numRotors;
 
@@ -143,13 +143,13 @@ public final class Main {
     }
 
     /** Return a rotor, reading its description from _config. **/
-    private Rotor readRotor() {
+    private Rotor readRotor(int counter, int _numRotors) {
         try {
             // FIXME
             String cycles = "";
             String name = (_config.next());
             String rotortype = _config.next();
-            int counter =0;
+
             while (_config.hasNext("\\(.*\\)")) {
                 cycles += _config.next();
             }
@@ -157,10 +157,12 @@ public final class Main {
             Permutation permutation =  new Permutation(cycles, _alphabet);
             if (rotortype.charAt(0) == 'M') {
                 String notches = rotortype.substring(1);
+                // check notches with alphabet.
                 return new MovingRotor(name, permutation, notches);
             } else if (rotortype.charAt(0) == 'R') {
                 return new Reflector(name, permutation);
-            } else if (rotortype.charAt(0) == 'N') {
+            } //check that rotortype length
+            else if (rotortype.charAt(0) == 'N') {
                 return new FixedRotor(name, permutation);
             } else {
                 throw new EnigmaException("No valid rotor found!");
@@ -182,8 +184,6 @@ public final class Main {
         String cycles = "";
         String[] setA = settings.split(" ");
 
-//        settingInput = settingInput.replaceAll("[()]","");
-
         if (!setA[0].equals("*")) {
             throw new EnigmaException("Settings must start with *!");
         }
@@ -204,22 +204,7 @@ public final class Main {
             rotor_list[i] = info.next();
             i += 1;
         }
-//        if(rotor_list.length != settingInput.length()){
-//            throw new EnigmaException("Wrong number of arguments");
-//        }
 
-//        if(settingInput.length() > rotor_list.length){
-//            throw new EnigmaException(" invalid setting passed");
-//        }
-//        if (setA.length - 2 < M.numRotors()) {
-//            throw new EnigmaException("Too few arguments");
-//        }
-//        info.next();
-//        while (i < M.numRotors()) {
-//            rotor_list[i] = info.next();
-//            i += 1;
-//        }
-//
         if(settingInput.length() > rotor_list.length){
             throw new EnigmaException(" invalid setting passed");
         }
