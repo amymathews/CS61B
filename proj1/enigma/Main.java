@@ -125,6 +125,11 @@ public final class Main {
             if (text.contains("(") | text.contains(")") | text.contains("*")) {
                 throw new EnigmaException("Wrong configuration format!");
             }
+            _alphabet = new Alphabet(text);
+            if(_config.hasNextInt()){
+                throw new EnigmaException(" Wrong configuration format!");
+            }
+
             while(_config.hasNext()){
                 allRotors.add(readRotor());
             }
@@ -174,6 +179,10 @@ public final class Main {
         String cycles = "";
         String[] setA = settings.split(" ");
         String settingInput = setA[setA.length-1];
+
+        if(!setA[0].equals("*")){
+            throw new EnigmaException("Settings must start with *!");
+        }
         int i = 0;
         if(setA.length - 2 < M.numRotors()){
             throw new EnigmaException("Too few arguments");
@@ -200,13 +209,9 @@ public final class Main {
                 }
             }
         }
-//        int l = M.numRotors() +2;
-//        for(; l < setA.length; l += 1){
-//            cycles += setA[i];
-//        }
+        /** check if the first rotor is fixed**/
 
         Permutation perm = new Permutation(cycles, _alphabet);
-
         M.setPlugboard(perm);
         M.insertRotors(rotor_list);
         M.setRotors(settingInput);
@@ -222,15 +227,15 @@ public final class Main {
     /** Print MSG in groups of five (except that the last group may
      *  have fewer letters). */
     private void printMessageLine(String msg) {
-        int counter = 0;
+//        int counter = 0;
         for(int i = 0; i < msg.length(); i += 5) {
-//            counter += 1;
             if(i + 5 < msg.length()) {
-                _output.println(msg.substring(i, i + 5) + " ");
+                _output.print(msg.substring(i, i + 5) + " ");
             }
             else {
                 _output.println(msg.substring(i));
             }
+//            _output.println(msg.substring(i));
         }
         // FIXME
     }
@@ -250,5 +255,5 @@ public final class Main {
     /** True if --verbose specified. */
     private static boolean _verbose;
 
-    private ArrayList allRotors;
+    private ArrayList allRotors = new ArrayList<>();
 }
