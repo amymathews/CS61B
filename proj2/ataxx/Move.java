@@ -31,7 +31,15 @@ class Move {
         _row1 = (char) (row1 + '1' - 2);
         _fromIndex = row0 * EXTENDED_SIDE + col0;
         _toIndex = row1 * EXTENDED_SIDE + col1;
-        _isExtend = false; // FIXME
+        int valid = abs(_fromIndex - _toIndex);
+        if (valid == 1 || 9 < valid && valid < 13 ) {
+            _isExtend = true;
+        }
+        else{
+            _isExtend = false;
+        }
+
+//        _isExtend = true; // FIXME
         _isJump = false; // FIXME
     }
 
@@ -123,7 +131,20 @@ class Move {
 
     @Override
     public String toString() {
-        return ""; // FIXME
+        String ret_move = "";
+        // FIXME
+        if(isPass()){
+            return "-";
+        }
+        else {
+            ret_move += col0();
+            ret_move += row0();
+            ret_move += "-";
+            ret_move += col1();
+            ret_move += row1();
+            return ret_move;
+
+        }
     }
 
     /** Syntax of a move.  Groups capture row and column. */
