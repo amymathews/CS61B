@@ -14,7 +14,7 @@ import java.util.function.Consumer;
 
 import static ataxx.PieceColor.*;
 import static ataxx.GameException.error;
-import java.util.HashMap;
+
 
 /** An Ataxx board.   The squares are labeled by column (a char value between
  *  'a' - 2 and 'g' + 2) and row (a char value between '1' - 2 and '7'
@@ -295,7 +295,7 @@ class Board {
             incrPieces(_whoseMove, 1);
         }
         ArrayList<Integer> numflips = new ArrayList<Integer>(); // SHOULD I use an arraylist could I use a hashmap?
-        HashMap<Integer, String> numFlips = new HashMap<Integer, String>();
+//        HashMap<Integer, String> numFlips = new HashMap<Integer, String>();
 
         set(move.col1(), move.row1(), _whoseMove);
         int place = index(move.col1(), move.row1());
