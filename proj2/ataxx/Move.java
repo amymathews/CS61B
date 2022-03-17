@@ -25,22 +25,27 @@ class Move {
 
     /** The move COL0 ROW0 - COL1 ROW1.  This must be a legal move. */
     private Move(int col0, int row0, int col1, int row1) {
+
         _col0 = (char) (col0 + 'a' - 2);
         _row0 = (char) (row0 + '1' - 2);
         _col1 = (char) (col1 + 'a' - 2);
         _row1 = (char) (row1 + '1' - 2);
+        col0n = col0;
+        row0n = row0;
         _fromIndex = row0 * EXTENDED_SIDE + col0;
         _toIndex = row1 * EXTENDED_SIDE + col1;
+
         int valid = abs(_fromIndex - _toIndex);
         if (valid == 1 || 9 < valid && valid < 13 ) {
             _isExtend = true;
         }
-        else{
+        else {
             _isExtend = false;
         }
 
+        _isJump = !isExtend() && !isPass();
+
 //        _isExtend = true; // FIXME
-        _isJump = false; // FIXME
     }
 
     /** A pass. */
@@ -168,6 +173,7 @@ class Move {
 
     /** From and two squares, or 0s if a pass. */
     private char _col0, _row0, _col1, _row1;
+    private int col0n, row0n;
 
     /** The set of all Moves other than pass, indexed by from and to column and
      *  row positions. */
