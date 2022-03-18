@@ -171,12 +171,18 @@ public class ArrayHeap<T> {
      */
     private int minPriorityIndex(int index1, int index2) {
         // TODO
+        if(getNode(index1) == null){
+            return index2;
+        }
+        if(getNode(index2) == null){
+            return index1;
+        }
         double priority1 = getNode(index1).priority();
         double priority2 = getNode(index2).priority();
         if (priority1 < priority2) {
-            return (int) priority1;
+            return index1;
         }
-        return (int) priority2;
+        return index2;
     }
 
     /**
@@ -187,7 +193,7 @@ public class ArrayHeap<T> {
      */
     public T peek() {
         // TODO
-        if (contents.size() > 1) {
+        if (size() > 0) {
             /* Since we always start from 1. */
             return getNode(1).item();
         }
@@ -201,10 +207,18 @@ public class ArrayHeap<T> {
      */
     private void bubbleUp(int index) {
 
-        int MinIndex = Math.min(index, getParentOf(index));
-        if (index == MinIndex && index > 1) {
-            swap(index, MinIndex);
-            bubbleUp(MinIndex);
+        int smallIndex = minPriorityIndex(index, getParentOf(index));
+        int statParent = getParentOf(index);
+        if(index == 1){
+            return;
+        }
+        if (getNode(index) == null || getNode(getParentOf(index)) == null){
+            return;
+        }
+        else if (getNode(smallIndex).priority() < getNode(getParentOf(index)).priority()) {
+            swap(index,statParent);
+            /** statParent index doesnt change.**/
+            bubbleUp(statParent);
         }
         // TODO
     }
@@ -214,27 +228,18 @@ public class ArrayHeap<T> {
      * needed.
      */
     private void bubbleDown(int index) {
+        int minchild = minPriorityIndex(getLeftOf(index), getRightOf(index));
+        int MinIndex = minPriorityIndex(index, minchild);
 
-        int MinIndex = Math.min(index, Math.min(getLeftOf(index), getRightOf(index)));
-        if (index != MinIndex) {
-            swap(index, MinIndex);
-            bubbleDown(MinIndex);
+        if(getLeftOf(index) > size() ) {
+            return;
+        } if (getNode(index) == null || (getNode(getParentOf(index)) == null && index != 1)){
+            return;
+        } else if(getNode(index).priority() > getNode(minchild).priority()) {
+            swap(index, minchild);
+            bubbleDown(minchild);
         }
 
-//        Node curr_Node = getNode(index);
-//        Node left_node = getNode(getLeftOf(index));
-//        Node right_node = getNode(getRightOf(index));
-//        if(curr_Node != null){
-//            if(curr_Node.priority() > left_node.priority()) {
-//                swap(index, getLeftOf(index));
-//                bubbleDown(getLeftOf(index));
-//            } else {
-//                if(curr_Node.priority() > right_node.priority()) {
-//                    swap(index, getRightOf(index));
-//                    bubbleDown(getRightOf(index));
-//                }
-//            }
-//        }
         // TODO
     }
 
@@ -244,8 +249,9 @@ public class ArrayHeap<T> {
      */
     public void insert(T item, double priority) {
         /* Adds the item to the left. */
-        contents.add(new Node(item, priority));
-        bubbleUp(size() - 1);
+//        contents.add(new Node(item, priority));
+        setNode( size() + 1 ,new Node(item, priority));
+        bubbleUp(size());
         // TODO
     }
 
@@ -262,10 +268,12 @@ public class ArrayHeap<T> {
         } else if (size() == 1) {
             return removeNode(1).item();
         } else {
-            Node min = removeNode(1);
-            Node temp = removeNode(size());
-            insert(temp.item(), temp.priority());
-            return min.item();
+            int minindex = 1;
+            int maxindex = size();
+            swap(minindex, maxindex);
+            Node retNode = removeNode(size());
+            bubbleDown(1);
+            return retNode.item();
         }
     }
 
@@ -276,6 +284,20 @@ public class ArrayHeap<T> {
      * item equality with .equals(), not ==
      */
     public void changePriority(T item, double priority) {
+        for (int i = 1; i < contents.size(); i++) {
+            Node node = getNode(i);
+            if (node.item().equals(item)) {
+                double oldPriority = getNode(i).priority();
+                node.setPriority(priority);
+                if (oldPriority < priority) {
+                    bubbleDown(i);
+                } else {
+                    bubbleUp(i);
+                }
+                break;
+            }
+        }
+    }
         // TODO
 
-}}
+}
