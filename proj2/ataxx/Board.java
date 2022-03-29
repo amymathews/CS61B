@@ -336,7 +336,7 @@ class Board {
 
     /** Undo the last move. */
     void undo() {
-        Integer sqindex =0;
+        Integer sqindex = 0;
         PieceColor color = null;
         // FIXME
         if(_undoSquares.isEmpty()){

@@ -105,9 +105,10 @@ class AI extends Player {
             case BLUE -> -winningValue;
             default -> 0;
             };
-        }
+        } else {
 
-        return 0; // FIXME
+            return board.redPieces() - board.bluePieces();
+        }// FIXME
     }
 
     /** Pseudo-random number generator for move computation. */
