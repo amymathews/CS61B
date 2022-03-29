@@ -17,14 +17,13 @@ public class BSTStringSet implements StringSet, Iterable<String> {
     @Override
     public void put(String s) {
         // FIXME: PART A
-        _root = traverseBST(s, _root);
+        _root = traversePutBST(s, _root);
     }
 
     @Override
     public boolean contains(String s) {
         // FIXME: PART A
-        Node node = traverseBST(s, _root);
-        return node != null && node.s.equals(s);
+        return traverseContainsBST(s, _root);
     }
 
     @Override
@@ -44,19 +43,33 @@ public class BSTStringSet implements StringSet, Iterable<String> {
      * The method returns 0 if the string is equal to the other string.
      * < 0 if the string is lexicographically less than the other string
      * > 0 if the string is lexicographically greater than the other string*/
-    private Node traverseBST(String s, Node n ){
+    private Node traversePutBST(String s, Node n ){
         if (n == null) {
             return new Node(s);
         }
         int val = s.compareTo(n.s);
         if(val < 0){
-            n.left = traverseBST(s, n.left);
+            n.left = traversePutBST(s, n.left);
         }
         else if(val > 0){
-            n. right = traverseBST(s, n.right);
+            n. right = traversePutBST(s, n.right);
         }
         return  n;
     }
+    private boolean traverseContainsBST(String s, Node n ){
+        if (n == null) {
+            return false;
+        }
+        int val = s.compareTo(n.s);
+        if(val < 0){
+            return traverseContainsBST(s, n.left);
+        }
+        else if(val > 0){
+            return traverseContainsBST(s, n.right);
+        }
+        return true;
+    }
+
 
     /** Represents a single Node of the tree. */
     private static class Node {
