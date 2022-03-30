@@ -58,7 +58,6 @@ class ECHashStringSet implements StringSet {
 
     private int whichBucket(String s){
         //figure out which index i bucket to go to
-        // get linked list
         int index = s.hashCode() % buckets.length;
         if (index < 0) {
             index = index & 0x7fffffff % buckets.length;
@@ -72,6 +71,7 @@ class ECHashStringSet implements StringSet {
         ogBucketLength = 0;
         for (LinkedList<String> l : oldBucket) {
             if (l != null) {
+                // now we need to put all the stuff back into our bigger list we utilize put for it.
                 for (String s : l) {
                     this.put(s);
                 }
