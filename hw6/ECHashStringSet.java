@@ -21,14 +21,11 @@ class ECHashStringSet implements StringSet {
     public void put(String s) {
         // FIXME
         // reach the load limit we resize.
-        if(ogBucketLength/buckets.length > 5){
+        if(buckets.length != 0 && (double) ogBucketLength/ (double) buckets.length > 5){
             resize();
         }
-        if (s == null) {
-            return;
-        }
         int index = whichBucket(s);
-        while (index >buckets.length) {
+        while (index > buckets.length) {
             resize();
         }
         if (buckets[index] == null) {
