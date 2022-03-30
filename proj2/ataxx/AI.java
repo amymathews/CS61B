@@ -4,6 +4,7 @@
 
 package ataxx;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import static ataxx.PieceColor.*;
@@ -78,20 +79,61 @@ class AI extends Player {
         /* We use WINNING_VALUE + depth as the winning value so as to favor
          * wins that happen sooner rather than later (depth is larger the
          * fewer moves have been made. */
-        if (depth == 0 || board.getWinner() != null) {
-            return staticScore(board, WINNING_VALUE + depth);
-        }
-
         Move best;
         best = null;
-        int bestScore;
-        bestScore = 0; // FIXME
-
+        int bestScore = 0;
         // FIXME
-
-        if (saveMove) {
-            _lastFoundMove = best;
+        if (depth == 0 || board.getWinner() != null) {
+            return staticScore(board, WINNING_VALUE + depth);
+        } else {
+            ArrayList<Move> allMoves = getLegalMoves(board, board.whoseMove());
+            if (board.legalMove(Move.pass())) {
+                allMoves.add(Move.pass());
+            }
+            for(Move m: allMoves) {
+                if(sense == 1) {
+                    bestScore = -INFTY;
+                    Board copyBoard = new Board(board);
+                    if(board.legalMove(m)) {
+                        copyBoard.makeMove(m);
+                        int possible = minMax(copyBoard, depth - 1, false, -1, alpha, beta);
+                        if (possible > bestScore) {
+                            bestScore = possible;
+                            alpha = max(alpha, bestScore);
+                            if (saveMove) {
+                                _lastFoundMove = m;
+                            }
+                            if (alpha >= beta) {
+                                return bestScore;
+                            }
+                        }
+                    }
+                    board.undo();
+                } else {
+                    bestScore = INFTY;
+                    Board copyBoard = new Board(board);
+                    if(board.legalMove(m)){
+                    copyBoard.makeMove(m);
+                    int possible = minMax(copyBoard, depth - 1, false, 1, alpha, beta);
+                    if(possible < bestScore) {
+                        bestScore = possible;
+                        beta = min(beta,bestScore);
+                        if (saveMove) {
+                            _lastFoundMove = m;
+                        }
+                        if(alpha >= beta){
+                            return  bestScore;
+                        }
+                    }
+                    board.undo();
+                }
+                }
+            }
         }
+//
+//        if (saveMove) {
+//            _lastFoundMove = best;
+//        }
         return bestScore;
     }
 
@@ -111,6 +153,30 @@ class AI extends Player {
         }// FIXME
     }
 
+    /** helper function to hold all possible legal moves **/
+    private ArrayList<Move> getLegalMoves(Board board, PieceColor player){
+        ArrayList<Move> allLegalMoves = new ArrayList<>();
+        for (char r0 = '7'; r0 >= '1'; r0--) {
+            for (char c0 = 'a'; c0 <= 'g'; c0++) {
+                int index = Board.index(c0, r0);
+                if (board.get(index) == player) {
+                    for (int i = -2; i <= 2; i++) {
+                        for (int j = -2; j <= 2; j++) {
+                            char r1 = (char) (r0 + j);
+                            char c1 = (char) (c0 + i);
+                            Move currMove = Move.move(c0, r0, c1, r1);
+                            if (board.legalMove(currMove)) {
+                                allLegalMoves.add(currMove);
+                            }
+
+                        }
+                    }
+                }
+            }
+        }
+
+        return allLegalMoves;
+    }
     /** Pseudo-random number generator for move computation. */
     private Random _random = new Random();
 }

@@ -10,7 +10,7 @@ import static ataxx.Command.Type.*;
 /** A Player that receives its moves from its Game's getMoveCmnd method.
  *  @author P. N. Hilfinger
  */
-class Manual extends Player {
+class   Manual extends Player {
 
     /** A Player that will play MYCOLOR on GAME, taking its moves from
      *  GAME. */
