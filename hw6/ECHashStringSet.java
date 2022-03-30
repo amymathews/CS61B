@@ -66,16 +66,21 @@ class ECHashStringSet implements StringSet {
         return index;
     }
     private void resize(){
-        LinkedList<String>[] oldBucket = buckets;
-        buckets = new LinkedList[2 * oldBucket.length];
-        // we need to rewrite the size.
-        ogBucketLength = 0;
-        for (LinkedList<String> l : oldBucket) {
-            if (l != null) {
-                for (String s : l) {
-                    this.put(s);
-                }
-            }
+//        LinkedList<String>[] oldBucket = buckets;
+//        buckets = new LinkedList[2 * oldBucket.length];
+//        // we need to rewrite the size.
+//        ogBucketLength = 0;
+//        for (LinkedList<String> l : oldBucket) {
+//            if (l != null) {
+//                for (String s : l) {
+//                    this.put(s);
+//                }
+//            }
+//        }
+        List oldBucket = asList();
+        buckets = new LinkedList[2 * buckets.length];
+        for (int i = 0; i < buckets.length; i++) {
+            buckets[i] = new LinkedList<String>();
         }
 
     }
