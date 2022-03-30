@@ -82,59 +82,40 @@ class AI extends Player {
         Move best;
         best = null;
         int bestScore = 0;
+
         // FIXME
         if (depth == 0 || board.getWinner() != null) {
             return staticScore(board, WINNING_VALUE + depth);
-        } else {
-            ArrayList<Move> allMoves = getLegalMoves(board, board.whoseMove());
-            if (board.legalMove(Move.pass())) {
-                allMoves.add(Move.pass());
-            }
-            for(Move m: allMoves) {
-                if(sense == 1) {
-                    bestScore = -INFTY;
-                    Board copyBoard = new Board(board);
-                    if(board.legalMove(m)) {
-                        copyBoard.makeMove(m);
-                        int possible = minMax(copyBoard, depth - 1, false, -1, alpha, beta);
-                        if (possible > bestScore) {
-                            bestScore = possible;
-                            alpha = max(alpha, bestScore);
-                            if (saveMove) {
-                                _lastFoundMove = m;
-                            }
-                            if (alpha >= beta) {
-                                return bestScore;
-                            }
-                        }
-                    }
-                    board.undo();
-                } else {
-                    bestScore = INFTY;
-                    Board copyBoard = new Board(board);
-                    if(board.legalMove(m)){
-                    copyBoard.makeMove(m);
-                    int possible = minMax(copyBoard, depth - 1, false, 1, alpha, beta);
-                    if(possible < bestScore) {
-                        bestScore = possible;
-                        beta = min(beta,bestScore);
-                        if (saveMove) {
-                            _lastFoundMove = m;
-                        }
-                        if(alpha >= beta){
-                            return  bestScore;
-                        }
-                    }
-                    board.undo();
-                }
-                }
-            }
         }
-//
-//        if (saveMove) {
-//            _lastFoundMove = best;
-//        }
-        return bestScore;
+        ArrayList<Move> allMoves = getLegalMoves(board, board.whoseMove());
+            if (board.legalMove(Move.pass())) {
+                allMoves.add(Move.pass());}
+        for(Move m: allMoves){
+            best = m;
+            board.makeMove(m);
+            int possibleScore = minMax(board, depth - 1,false, sense * -1, alpha, beta);
+            if(sense == 1 && possibleScore >alpha){
+                alpha = possibleScore;
+                if(saveMove){
+                    _lastFoundMove = m;
+                }
+            }
+            if(sense == -1 && possibleScore <beta){
+                beta = possibleScore;
+                if(saveMove) {
+                    _lastFoundMove = m;
+                }
+            }
+            board.undo();
+            if(alpha >= beta){
+                break;
+            }
+
+        }
+        if(sense == 1) {
+            return  alpha;
+        }
+        return beta;
     }
 
     /** Return a heuristic value for BOARD.  This value is +- WINNINGVALUE in
