@@ -25,9 +25,9 @@ class ECHashStringSet implements StringSet {
         // FIXME
         // reach the load limit we resize.Given in spec: resize the hash table
         // as soon as the load factor exceeds 5
-//        if((double) ogBucketLength / (double) buckets.length > 5){
-//            resize();
-//        }
+        if((double) ogBucketLength / (double) buckets.length > 5){
+            resize();
+        }
         int index = whichBucket(s);
         while (index > buckets.length) {
             resize();
