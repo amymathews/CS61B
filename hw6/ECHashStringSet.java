@@ -10,7 +10,7 @@ class ECHashStringSet implements StringSet {
     private int ogBucketLength;
 
     public ECHashStringSet(){
-        buckets = (LinkedList<String>[]) new LinkedList[ogBucketLength];
+        buckets = (LinkedList<String>[]) new LinkedList[5];
         for (int i = 0; i < 5; i++) {
             buckets[i] = new LinkedList<String>();
         }
@@ -39,21 +39,14 @@ class ECHashStringSet implements StringSet {
     @Override
     public boolean contains(String s) {
         int index = whichBucket(s);
-        if(buckets[index] != null && buckets[index].contains(s)){
-            return true;
-        }
-        return false; // FIXME
+        return buckets[index].contains(s); // FIXME
     }
 
     @Override
     public List<String> asList() {
-        ArrayList<String> retList = new ArrayList<>();
+        LinkedList<String> retList = new LinkedList<>();
         for (LinkedList<String> l : buckets) {
-            if (l != null) {
-                for (String s : l) {
-                    retList.add(s);
-                }
-            }
+            retList.addAll(l);
         }
         return retList; // FIXME
     }
