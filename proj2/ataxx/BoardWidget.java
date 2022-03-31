@@ -18,7 +18,7 @@ import static ataxx.PieceColor.*;
 import static ataxx.Utils.*;
 
 /** Widget for displaying an Ataxx board.
- *  @author
+ *  @author Amy Mathews
  */
 class BoardWidget extends Pad  {
 
@@ -77,12 +77,11 @@ class BoardWidget extends Pad  {
         g.setColor(BLANK_COLOR);
         g.fillRect(0, 0, _dim, _dim);
 
-        // FIXME
     }
 
     /** Draw a block centered at (CX, CY) on G. */
     void drawBlock(Graphics2D g, int cx, int cy) {
-        // FIXME
+
     }
 
     /** Clear selected block, if any, and turn off block mode. */
@@ -106,10 +105,9 @@ class BoardWidget extends Pad  {
             if (mouseCol >= 'a' && mouseCol <= 'g'
                 && mouseRow >= '1' && mouseRow <= '7') {
                 if (_blockMode) {
-                    _commandQueue.offer("block c3"); // FIXME
+                    _commandQueue.offer("block c3");
                 } else {
                     if (_selectedCol != 0) {
-                        // FIXME
                         _selectedCol = _selectedRow = 0;
                     } else {
                         _selectedCol = mouseCol;

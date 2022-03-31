@@ -1,0 +1,9 @@
+#* java -ea ataxx.Main
+# Playing a game with staff enigma.
+dump
+block d4
+block b1
+dump
+a7-a6
+dump
+quit

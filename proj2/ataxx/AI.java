@@ -8,11 +8,9 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import static ataxx.PieceColor.*;
-import static java.lang.Math.min;
-import static java.lang.Math.max;
 
 /** A Player that computes its own moves.
- *  @author
+ *  @author Amy Mathews
  */
 class AI extends Player {
 
@@ -79,43 +77,44 @@ class AI extends Player {
         /* We use WINNING_VALUE + depth as the winning value so as to favor
          * wins that happen sooner rather than later (depth is larger the
          * fewer moves have been made. */
-        Move best;
-        best = null;
-        int bestScore = 0;
-
-        // FIXME
+        int bestScore;
+        if (!board.canMove(board.whoseMove())) {
+            board.getWinner();
+        }
         if (depth == 0 || board.getWinner() != null) {
             return staticScore(board, WINNING_VALUE + depth);
         }
         ArrayList<Move> allMoves = getLegalMoves(board, board.whoseMove());
-            if (board.legalMove(Move.pass())) {
-                allMoves.add(Move.pass());}
-        for(Move m: allMoves){
-            best = m;
+        if (board.legalMove(Move.pass())) {
+            allMoves.add(Move.pass());
+        }
+        for (Move m: allMoves) {
             board.makeMove(m);
-            int possibleScore = minMax(board, depth - 1,false, sense * -1, alpha, beta);
-            if(sense == 1 && possibleScore >alpha){
+            int possibleScore = minMax(board, depth - 1, false,
+                    sense * -1, alpha, beta);
+            if (sense == 1 && possibleScore > alpha) {
                 alpha = possibleScore;
-                if(saveMove){
+                if (saveMove) {
                     _lastFoundMove = m;
                 }
             }
-            if(sense == -1 && possibleScore <beta){
+            if (sense == -1 && possibleScore < beta) {
                 beta = possibleScore;
-                if(saveMove) {
+                if (saveMove) {
                     _lastFoundMove = m;
                 }
             }
             board.undo();
-            if(alpha >= beta){
+            if (alpha >= beta) {
                 break;
             }
-
         }
-        if(sense == 1) {
-            return  alpha;
+        if (sense == 1) {
+            bestScore = alpha;
+        } else {
+            bestScore = beta;
         }
-        return beta;
+        return bestScore;
     }
 
     /** Return a heuristic value for BOARD.  This value is +- WINNINGVALUE in
@@ -131,11 +130,15 @@ class AI extends Player {
         } else {
 
             return board.redPieces() - board.bluePieces();
-        }// FIXME
+        }
     }
 
-    /** helper function to hold all possible legal moves **/
-    private ArrayList<Move> getLegalMoves(Board board, PieceColor player){
+    /** @param board
+     * @param player
+     * @return allLegalMoves
+     * helper function to hold all possible legal moves.
+     * **/
+    private ArrayList<Move> getLegalMoves(Board board, PieceColor player) {
         ArrayList<Move> allLegalMoves = new ArrayList<>();
         for (char r0 = '7'; r0 >= '1'; r0--) {
             for (char c0 = 'a'; c0 <= 'g'; c0++) {
@@ -160,4 +163,5 @@ class AI extends Player {
     }
     /** Pseudo-random number generator for move computation. */
     private Random _random = new Random();
+
 }

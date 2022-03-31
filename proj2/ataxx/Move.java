@@ -11,7 +11,7 @@ import static java.lang.Math.abs;
 
 /** Represents an Ataxx move. There is one Move object created for
  *  each distinct Move.
- *  @author
+ *  @author Amy Mathews
  */
 class Move {
 
@@ -36,16 +36,13 @@ class Move {
         _toIndex = row1 * EXTENDED_SIDE + col1;
 
         int valid = abs(_fromIndex - _toIndex);
-        if (valid == 1 || 9 < valid && valid < 13 ) {
+        if (valid == 1 || 9 < valid && valid < 13) {
             _isExtend = true;
-        }
-        else {
+        } else {
             _isExtend = false;
         }
-
         _isJump = !isExtend() && !isPass();
 
-//        _isExtend = true; // FIXME
     }
 
     /** A pass. */
@@ -136,18 +133,16 @@ class Move {
 
     @Override
     public String toString() {
-        String ret_move = "";
-        // FIXME
-        if(isPass()){
+        String retMove = "";
+        if (isPass()) {
             return "-";
-        }
-        else {
-            ret_move += col0();
-            ret_move += row0();
-            ret_move += "-";
-            ret_move += col1();
-            ret_move += row1();
-            return ret_move;
+        } else {
+            retMove += col0();
+            retMove += row0();
+            retMove += "-";
+            retMove += col1();
+            retMove += row1();
+            return retMove;
 
         }
     }
@@ -173,6 +168,7 @@ class Move {
 
     /** From and two squares, or 0s if a pass. */
     private char _col0, _row0, _col1, _row1;
+    /** col0n and row0n. **/
     private int col0n, row0n;
 
     /** The set of all Moves other than pass, indexed by from and to column and
