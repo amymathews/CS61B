@@ -10,8 +10,10 @@ public class Main {
     static final File CWD = new File(".");
 
     /** Main metadata folder. */
-    static final File CAPERS_FOLDER = null; // FIXME
-
+    static final File CAPERS_FOLDER = new File(".capers"); // FIXME
+    /** Story file **/
+    static final File STORY = Utils.join(CAPERS_FOLDER, "story");
+    /** join - create a file path **/
     /**
      * Runs one of three commands:
      * story [text] -- Appends "text" + a newline to a story file in the
@@ -49,7 +51,15 @@ public class Main {
         case "story":
             writeStory(args);
             break;
+        case "dog":
+            makeDog(args);
+            break;
+        case "birthday":
+            celebrateBirthday(args);
+            break;
         // FIXME
+
+
         default:
             exitWithError(String.format("Unknown command: %s", args[0]));
         }
@@ -67,6 +77,9 @@ public class Main {
      *
      */
     public static void setupPersistence() {
+        CAPERS_FOLDER.mkdir();
+        Dog.DOG_FOLDER.mkdir();
+
         // FIXME
     }
 
@@ -77,7 +90,16 @@ public class Main {
      */
     public static void writeStory(String[] args) {
         validateNumArgs("story", args, 2);
-        // FIXME
+        // if something exists in story
+        if(STORY.exists()) {
+            Utils.writeContents(STORY, Utils.readContentsAsString(STORY) + args[1] + "\n");
+            System.out.println(Utils.readContentsAsString(STORY));
+        }
+        else {
+            Utils.writeContents(STORY, args[1] + "\n");
+            System.out.println(Utils.readContentsAsString(STORY));
+        }
+            // FIXME
     }
 
     /**
@@ -88,6 +110,9 @@ public class Main {
      */
     public static void makeDog(String[] args) {
         validateNumArgs("dog", args, 4);
+        Dog dogobj = new Dog (args[1], args[2], Integer.parseInt(args[3]));
+        dogobj.saveDog();
+        System.out.println(dogobj);
         // FIXME
     }
 
@@ -99,6 +124,9 @@ public class Main {
      */
     public static void celebrateBirthday(String[] args) {
         validateNumArgs("birthday", args, 2);
+        Dog dogobj = Dog.fromFile(args[1]);
+        dogobj.haveBirthday();
+        dogobj.saveDog();
         // FIXME
     }
 
