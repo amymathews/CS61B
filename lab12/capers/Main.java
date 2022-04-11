@@ -108,6 +108,7 @@ public class Main {
      */
     public static void makeDog(String[] args) {
         validateNumArgs("dog", args, 4);
+        // parseInt -> converts argument to a string
         Dog dogobj = new Dog (args[1], args[2], Integer.parseInt(args[3]));
         dogobj.saveDog();
         System.out.println(dogobj);
