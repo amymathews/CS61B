@@ -59,7 +59,6 @@ public class Main {
             break;
         // FIXME
 
-
         default:
             exitWithError(String.format("Unknown command: %s", args[0]));
         }
@@ -79,7 +78,6 @@ public class Main {
     public static void setupPersistence() {
         CAPERS_FOLDER.mkdir();
         Dog.DOG_FOLDER.mkdir();
-
         // FIXME
     }
 

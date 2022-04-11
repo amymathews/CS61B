@@ -52,7 +52,8 @@ public class Dog implements Serializable{ // FIXME
      * Saves a dog to a file for future use.
      */
     public void saveDog() {
-        File save_Dog = new File(DOG_FOLDER, _name);
+        /** Join -> creates proper filepaths to nest folders within directories**/
+        File save_Dog = Utils.join(DOG_FOLDER, _name);
         Utils.writeObject(save_Dog, this);
         // FIXME
     }
