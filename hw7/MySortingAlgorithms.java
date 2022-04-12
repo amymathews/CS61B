@@ -102,32 +102,43 @@ public class MySortingAlgorithms {
             if(k == 0 || k == 1){
                 return;
             }
+            int middle = k/2;
+            int[] left_array = new int[middle];
+            int[] right_array = new int[k-middle];
+            //put the array values into the left array
+            for(int i = 0; i < middle; i += 1) {
+                left_array[i] = array[i];
 
-            sort(array,0,k);
+            }
+            //put the array values into the right array
+            for(int j = middle; j < k; j += 1 ){
+                right_array[j - middle] = array[j];
+
+            }
+            sort(left_array, middle);
+            sort(right_array, k-middle);
+            mergesort(array,left_array,right_array,middle, k-middle );
         }
-        private void sort(int arr[], int b, int e ) {
 
-            int middle = e/2;
-            sort(arr,0, middle);
-            sort(arr, middle, e);
-            mergesort(arr,b,middle,e);
-
-        }
-        private void mergesort(int arr[],int b, int m, int e ){
-            for (int i = m; i < e; i ++) {
-                int tmp = arr[i];
-                int j;
-                for (j = i-1; j >= b; j--) {
-                    if (arr[j] <= tmp) {
-                        break;
-                    }
-                    arr[j+1]=arr[j];
+        private void mergesort(int arr[], int left[], int right[], int left_end, int right_end) {
+            int i = 0, j = 0, k = 0;
+            while (i < left_end && j < right_end) {
+                if (left[i] <= right[j]) {
+                    arr[k++] = left[i++];
                 }
-                arr[j+1]=tmp;
+                else {
+                    arr[k++] = right[j++];
+                }
+            }
+            while (i < left_end) {
+                arr[k++] = left[i++];
+            }
+            while (j < right_end) {
+                arr[k++] = right[j++];
             }
 
-        }
 
+        }
 
         // may want to add additional methods
 
