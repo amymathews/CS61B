@@ -59,6 +59,7 @@ public class Dog implements Serializable{ // FIXME
     }
 
     @Override
+    /** gets called default ONLY toString **/
     public String toString() {
         return String.format(
             "Woof! My name is %s and I am a %s! I am %d years old! Woof!",

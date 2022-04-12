@@ -47,6 +47,7 @@ public class Main {
             exitWithError("Must have at least one argument");
         }
         setupPersistence();
+        System.out.println("hey im here " + args[0]);
         switch (args[0]) {
         case "story":
             writeStory(args);

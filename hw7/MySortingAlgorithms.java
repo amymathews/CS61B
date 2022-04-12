@@ -43,6 +43,16 @@ public class MySortingAlgorithms {
         @Override
         public void sort(int[] array, int k) {
             // FIXME
+            for (int i = 1; i < k; i += 1) {
+                int key = array[i];
+                int j = i - 1;
+                while (j >= 0 && array[j] > key) {
+                    array[j + 1] = array[j];
+                    j = j - 1;
+            }
+            array[j + 1] = key;
+        }
+
         }
 
         @Override
@@ -61,6 +71,17 @@ public class MySortingAlgorithms {
         @Override
         public void sort(int[] array, int k) {
             // FIXME
+            for(int i = 0; i < k - 1; i += 1) {
+                int min = i;
+                for(int j = i + 1; j < k; j += 1) {
+                    if(array[j] < array[min]) {
+                        min = j;
+                    }
+                    int temp = array[min];
+                    array[min] = array [j];
+                    array[i] = temp;
+                }
+            }
         }
 
         @Override
@@ -78,7 +99,35 @@ public class MySortingAlgorithms {
         @Override
         public void sort(int[] array, int k) {
             // FIXME
+            if(k == 0 || k == 1){
+                return;
+            }
+
+            sort(array,0,k);
         }
+        private void sort(int arr[], int b, int e ) {
+
+            int middle = e/2;
+            sort(arr,0, middle);
+            sort(arr, middle, e);
+            mergesort(arr,b,middle,e);
+
+        }
+        private void mergesort(int arr[],int b, int m, int e ){
+            for (int i = m; i < e; i ++) {
+                int tmp = arr[i];
+                int j;
+                for (j = i-1; j >= b; j--) {
+                    if (arr[j] <= tmp) {
+                        break;
+                    }
+                    arr[j+1]=arr[j];
+                }
+                arr[j+1]=tmp;
+            }
+
+        }
+
 
         // may want to add additional methods
 
