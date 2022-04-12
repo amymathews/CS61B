@@ -74,13 +74,13 @@ public class MySortingAlgorithms {
             for(int i = 0; i < k - 1; i += 1) {
                 int min = i;
                 for(int j = i + 1; j < k; j += 1) {
-                    if(array[j] < array[min]) {
+                    if (array[j] < array[min]) {
                         min = j;
                     }
-                    int temp = array[min];
-                    array[min] = array [j];
-                    array[i] = temp;
                 }
+                    int temp = array[min];
+                    array[min] = array [i];
+                    array[i] = temp;
             }
         }
 
