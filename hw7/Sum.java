@@ -9,8 +9,8 @@ public class Sum {
 
         Arrays.sort(A);
         Arrays.sort(B);
-        int lhs = 0, rhs = B.length -1;
-        while (lhs < rhs) {
+        int lhs = 0, rhs = B.length - 1;
+        while ((lhs >= 0) && lhs < A.length && (0 <= rhs) ) {
             int sum = A[lhs] + B[rhs];
             if (sum == m) return true;
             else if (sum < m) lhs++;
