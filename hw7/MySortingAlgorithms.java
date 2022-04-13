@@ -217,7 +217,7 @@ public class MySortingAlgorithms {
             int numberOfDigits = calculateNumberOfDigitsIn(maximumNumber);
             int placeValue = 1;
             while (numberOfDigits-- > 0) {
-                applyCountingSortOn(a, placeValue);
+                applyCountingSortOn(new_array, placeValue);
                 placeValue *= 10;
             }
             // FIXME
