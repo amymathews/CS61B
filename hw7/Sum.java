@@ -12,11 +12,16 @@ public class Sum {
         int lhs = 0, rhs = B.length - 1;
         while ((lhs >= 0) && lhs < A.length && (0 <= rhs) ) {
             int sum = A[lhs] + B[rhs];
-            if (sum == m) return true;
-            else if (sum < m) lhs++;
-            else rhs--;
+            if (sum == m) {
+                return true;
+            }
+            else if (sum < m){
+                lhs++;
+            }
+            else {
+                rhs--;
+            }
         }
         return false;  // REPLACE WITH YOUR ANSWER
     }
-
 }

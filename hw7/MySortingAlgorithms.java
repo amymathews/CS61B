@@ -20,7 +20,8 @@ import java.util.Arrays;
  * All implementations except Counting Sort adopted from Algorithms,
  * a textbook by Kevin Wayne and Bob Sedgewick. Their code does not
  * obey our style conventions.
- */
+ * used resources such as GeekForGeeks,websites and other youtube videos to understand the concepts
+ * NOT COMPLETELY MY OWN WORK, I ACKNOWLEDGE THIS, but I learnt the concepts.*/
 public class MySortingAlgorithms {
 
     /**
@@ -216,25 +217,6 @@ public class MySortingAlgorithms {
                 countingSort(a, k, place);
             }
 
-//            int[] new_array = new int[k];
-//            for(int i=0; i < k; k+=1){
-//                new_array[i] = a[i];
-//            }
-//            int max = new_array[0];
-//            for (int i = 1; i < new_array.length; i++) {
-//                if (max < new_array[i])
-//                    max = new_array[i];
-//            }
-//
-//            for (int s = 1; max / s > 0; s *= 10)
-//                countingSortForRadix(new_array, s);
-//            int maximumNumber = Max(new_array);
-//            int numberOfDigits = calculateNumberOfDigitsIn(maximumNumber);
-//            int placeValue = 1;
-//            while (numberOfDigits-- > 0) {
-//                applyCountingSortOn(new_array, placeValue);
-//                placeValue *= 10;
-//            }
             // FIXME
         }
         public int getMax(int array[], int n) {
@@ -245,65 +227,6 @@ public class MySortingAlgorithms {
                 }
             }
             return max;
-        }
-        public int Max(int[] a) {
-            int max = 0;
-            for(int i=0; i<a.length; i++) {
-                if(a[i]>max) {
-                    max = a[i];
-                }
-            }
-            return max;
-        }
-        public int calculateNumberOfDigitsIn(int n) {
-            int count = 0;
-            while (n != 0) {
-                n = n / 10;
-                ++count;
-            }
-            return count;
-
-        }
-        void applyCountingSortOn(int[] numbers, int placeValue) {
-            int range = 10; // decimal system, numbers from 0-9
-
-            int length = numbers.length;
-            int[] frequency = new int[10];
-            int[] sortedValues = new int[length];
-            int[] result = new int[length];
-
-            // calculate the frequency of digits
-            for (int i = 0; i < length; i++) {
-                int digit = (numbers[i] / placeValue) % range;
-                frequency[digit]++;
-            }
-
-            for (int i = 1; i < range; i++) {
-                frequency[i] += frequency[i - 1];
-            }
-
-            for (int i = length - 1; i >= 0; i--) {
-                int digit = (numbers[i] / placeValue) % range;
-                sortedValues[frequency[digit] - 1] = numbers[i];
-                frequency[digit]--;
-            }
-
-            System.arraycopy(result, 0, numbers, 0, length);
-        }
-        static void countingSortForRadix(int[] arr, int s) {
-            int[] countingArray = {0,0,0,0,0,0,0,0,0,0};
-            for (int i = 0; i < arr.length; i++)
-                countingArray[(arr[i] / s) % 10]++;
-
-            for (int i = 1; i < 10; i++)
-                countingArray[i] += countingArray[i - 1];
-
-            int[] outputArray = {0,0,0,0,0,0,0,0};
-            for (int i = arr.length - 1; i >= 0; i--)
-                outputArray[--countingArray[(arr[i] / s) % 10]] = arr[i];
-
-            for (int i = 0; i < arr.length; i++)
-                arr[i] = outputArray[i];
         }
         public void countingSort(int array[], int size, int place) {
             int[] output = new int[size + 1];
