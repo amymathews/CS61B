@@ -208,7 +208,63 @@ public class MySortingAlgorithms {
     public static class LSDSort implements SortingAlgorithm {
         @Override
         public void sort(int[] a, int k) {
+
+            int[] new_array = new int[k];
+            for(int i=0; i < k; k+=1){
+                new_array[i] = a[i];
+            }
+            int maximumNumber = Max(new_array);
+            int numberOfDigits = calculateNumberOfDigitsIn(maximumNumber);
+            int placeValue = 1;
+            while (numberOfDigits-- > 0) {
+                applyCountingSortOn(a, placeValue);
+                placeValue *= 10;
+            }
             // FIXME
+        }
+        public int Max(int[] a) {
+            int max = 0;
+            for(int i=0; i<a.length; i++) {
+                if(a[i]>max) {
+                    max = a[i];
+                }
+            }
+            return max;
+        }
+        public int calculateNumberOfDigitsIn(int n) {
+            int count = 0;
+            while (n != 0) {
+                n = n / 10;
+                ++count;
+            }
+            return count;
+
+        }
+        void applyCountingSortOn(int[] numbers, int placeValue) {
+            int range = 10; // decimal system, numbers from 0-9
+
+            int length = numbers.length;
+            int[] frequency = new int[10];
+            int[] sortedValues = new int[length];
+            int[] result = new int[length];
+
+            // calculate the frequency of digits
+            for (int i = 0; i < length; i++) {
+                int digit = (numbers[i] / placeValue) % range;
+                frequency[digit]++;
+            }
+
+            for (int i = 1; i < range; i++) {
+                frequency[i] += frequency[i - 1];
+            }
+
+            for (int i = length - 1; i >= 0; i--) {
+                int digit = (numbers[i] / placeValue) % range;
+                sortedValues[frequency[digit] - 1] = numbers[i];
+                frequency[digit]--;
+            }
+
+            System.arraycopy(result, 0, numbers, 0, length);
         }
 
         @Override
