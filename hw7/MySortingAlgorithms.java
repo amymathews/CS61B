@@ -157,6 +157,7 @@ public class MySortingAlgorithms {
         @Override
         public void sort(int[] array, int k) {
             // FIXME: to be implemented
+
         }
 
         // may want to add additional methods
@@ -208,19 +209,25 @@ public class MySortingAlgorithms {
     public static class LSDSort implements SortingAlgorithm {
         @Override
         public void sort(int[] a, int k) {
-
-            int[] new_array = new int[k];
-            for(int i=0; i < k; k+=1){
-                new_array[i] = a[i];
-            }
-            int max = new_array[0];
-            for (int i = 1; i < new_array.length; i++) {
-                if (max < new_array[i])
-                    max = new_array[i];
+            // Get maximum element
+            int max = getMax(a, k);
+            // Apply counting sort to sort elements based on place value.
+            for (int place = 1; max / place > 0; place *= 10) {
+                countingSort(a, k, place);
             }
 
-            for (int s = 1; max / s > 0; s *= 10)
-                countingSortForRadix(new_array, s);
+//            int[] new_array = new int[k];
+//            for(int i=0; i < k; k+=1){
+//                new_array[i] = a[i];
+//            }
+//            int max = new_array[0];
+//            for (int i = 1; i < new_array.length; i++) {
+//                if (max < new_array[i])
+//                    max = new_array[i];
+//            }
+//
+//            for (int s = 1; max / s > 0; s *= 10)
+//                countingSortForRadix(new_array, s);
 //            int maximumNumber = Max(new_array);
 //            int numberOfDigits = calculateNumberOfDigitsIn(maximumNumber);
 //            int placeValue = 1;
@@ -229,6 +236,15 @@ public class MySortingAlgorithms {
 //                placeValue *= 10;
 //            }
             // FIXME
+        }
+        public int getMax(int array[], int n) {
+            int max = array[0];
+            for (int i = 1; i < n; i++) {
+                if (array[i] > max) {
+                    max = array[i];
+                }
+            }
+            return max;
         }
         public int Max(int[] a) {
             int max = 0;
@@ -288,6 +304,35 @@ public class MySortingAlgorithms {
 
             for (int i = 0; i < arr.length; i++)
                 arr[i] = outputArray[i];
+        }
+        public void countingSort(int array[], int size, int place) {
+            int[] output = new int[size + 1];
+            int max = array[0];
+            for (int i = 1; i < size; i++) {
+                if (array[i] > max) {
+                    max = array[i];
+                }
+            }
+            int[] count = new int[max + 1];
+            for (int i = 0; i < max; ++i) {
+                count[i] = 0;
+            }
+            // Calculate count of elements
+            for (int i = 0; i < size; i++) {
+                count[(array[i] / place) % 10]++;
+            }
+            // Calculate cummulative count
+            for (int i = 1; i < 10; i++) {
+                count[i] += count[i - 1];
+            }
+            // Place the elements in sorted order
+            for (int i = size - 1; i >= 0; i--) {
+                output[count[(array[i] / place) % 10] - 1] = array[i];
+                count[(array[i] / place) % 10]--;
+            }
+            for (int i = 0; i < size; i++) {
+                array[i] = output[i];
+            }
         }
 
 
