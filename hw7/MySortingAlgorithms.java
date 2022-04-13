@@ -213,13 +213,21 @@ public class MySortingAlgorithms {
             for(int i=0; i < k; k+=1){
                 new_array[i] = a[i];
             }
-            int maximumNumber = Max(new_array);
-            int numberOfDigits = calculateNumberOfDigitsIn(maximumNumber);
-            int placeValue = 1;
-            while (numberOfDigits-- > 0) {
-                applyCountingSortOn(new_array, placeValue);
-                placeValue *= 10;
+            int max = new_array[0];
+            for (int i = 1; i < new_array.length; i++) {
+                if (max < new_array[i])
+                    max = new_array[i];
             }
+
+            for (int s = 1; max / s > 0; s *= 10)
+                countingSortForRadix(new_array, s);
+//            int maximumNumber = Max(new_array);
+//            int numberOfDigits = calculateNumberOfDigitsIn(maximumNumber);
+//            int placeValue = 1;
+//            while (numberOfDigits-- > 0) {
+//                applyCountingSortOn(new_array, placeValue);
+//                placeValue *= 10;
+//            }
             // FIXME
         }
         public int Max(int[] a) {
@@ -266,6 +274,22 @@ public class MySortingAlgorithms {
 
             System.arraycopy(result, 0, numbers, 0, length);
         }
+        static void countingSortForRadix(int[] arr, int s) {
+            int[] countingArray = {0,0,0,0,0,0,0,0,0,0};
+            for (int i = 0; i < arr.length; i++)
+                countingArray[(arr[i] / s) % 10]++;
+
+            for (int i = 1; i < 10; i++)
+                countingArray[i] += countingArray[i - 1];
+
+            int[] outputArray = {0,0,0,0,0,0,0,0};
+            for (int i = arr.length - 1; i >= 0; i--)
+                outputArray[--countingArray[(arr[i] / s) % 10]] = arr[i];
+
+            for (int i = 0; i < arr.length; i++)
+                arr[i] = outputArray[i];
+        }
+
 
         @Override
         public String toString() {
