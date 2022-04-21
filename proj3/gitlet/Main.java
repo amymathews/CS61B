@@ -16,19 +16,22 @@ public class Main {
             setupPersistence();
             switch (args[0]) {
                 case "init":
-
+                    Driver.init();
                     break;
                 case "add":
-
+                    Driver.add(args[0]);
                     break;
                 case "commit":
-
+                    Driver.commit();
+                    break;
+                case "status":
+                    Driver.status();
                     break;
                 case "checkout":
-
+                    Driver.checkout();
                     break;
                 case "log":
-
+                    Driver.log();
                 default:
 
             }
