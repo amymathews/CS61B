@@ -3,6 +3,8 @@ package gitlet;
 import java.io.File;
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.HashSet;
+
 import static gitlet.Utils.*;
 
 public class StagingArea implements Serializable {
@@ -10,12 +12,12 @@ public class StagingArea implements Serializable {
     // we need three things here, potential adds, potential removes and tracked files.
 
     private  HashMap <String, String> potential_adds;
-    private  HashMap <String, String> potential_removes;
+    private HashSet<String> potential_removes;
     private  HashMap <String, String> tracked_files;
 
     public StagingArea() {
         potential_adds = new HashMap<>();
-        potential_removes = new HashMap<>();
+        potential_removes = new HashSet<>();
         tracked_files = new HashMap<>();
     }
 
@@ -39,11 +41,20 @@ public class StagingArea implements Serializable {
                     return true;
                 }
                 else {
-                    return potential_removes.remove(filePath) == null;
+                    return potential_removes.remove(filePath);
                 }
             }
         }
         return false;
+    }
+
+    /** add the files  **/
+    public HashMap<String, String> commit() {
+        tracked_files.putAll(potential_adds);
+        for (String filePath : potential_removes) {
+            tracked_files.remove(filePath);
+        }
+        return tracked_files;  // Why return the trackedMap?  Because when we commit, we need a new trackedMap
     }
 
     /** Helper Functions. **/
@@ -55,6 +66,7 @@ public class StagingArea implements Serializable {
 //        return readObject(Driver.STAGING_AREA,this);
 //    }
     public static StagingArea fromFile() {
+
         return Utils.readObject(Driver.STAGING_AREA, StagingArea.class);
     }
 

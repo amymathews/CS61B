@@ -10,25 +10,23 @@ public class Main {
      *  <COMMAND> <OPERAND> .... */
     public static void main(String... args) {
         // FILL THIS IN
-            if (args.length == 0) {
-
-            }
-            setupPersistence();
+//            setupPersistence();
             switch (args[0]) {
                 case "init":
                     Driver.init();
                     break;
                 case "add":
-                    Driver.add(args[0]);
+                    Driver.add(args[1]);
                     break;
                 case "commit":
-                    Driver.commit();
+                    String message = args[1];
+                    Driver.commit(message);
                     break;
                 case "status":
                     Driver.status();
                     break;
                 case "checkout":
-                    Driver.checkout();
+                    Driver.checkout(args[1]);
                     break;
                 case "log":
                     Driver.log();
@@ -37,9 +35,7 @@ public class Main {
             }
             return;
         }
-    public static void setupPersistence() {
-        // FIXME
     }
-    }
+
 
 

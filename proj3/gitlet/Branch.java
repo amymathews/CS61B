@@ -17,20 +17,31 @@ public class Branch implements Serializable {
     // initial Branch constructor.
     public Branch(Commit first_commit) {
 
+        this.commit_head = first_commit;
         this.commit_code = commit_head.getCode();
         this.branch = "master";
-        this.commit_head = first_commit;
+
 
     }
     // general constructor.
     public Branch(Commit head, String new_branch) {
 
+        this.commit_head = head;
         this.commit_code = head.getCode();
         this.branch = new_branch;
-        this.commit_head = head;
+
     }
 
-
+    public static void setupPointer(File file, String commitId) {
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        Utils.writeContents(file, commitId);
+    }
 
     /** Helper Functions. **/
 
@@ -38,6 +49,8 @@ public class Branch implements Serializable {
         File file = join(Driver.BRANCHES_FOLDER, this.branch);
         writeObject(file, this);
     }
+
+
 
 
 

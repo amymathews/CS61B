@@ -42,8 +42,8 @@ public class Driver {
     /** init method responsible for starting the version control system in the directory its in.
      * Kind of like the SetUp Persistance  for lab12  **/
     public static void init(){
-        File gitlet = new File(".gitlet");
-        if (gitlet.exists()) {
+//        File gitlet = new File(".gitlet");
+        if (GITLET_FOLDER.exists()) {
             System.out.println("A gitlet version-control system exists in this current directory.");
         }
         else {
@@ -53,11 +53,13 @@ public class Driver {
             STAGING_AREA_FOLDER.mkdir();
             POTENTIAL_ADD.mkdir();
             POTENTIAL_REMOVE.mkdir();
+            BRANCHES_FOLDER.mkdir();
             try {
                 COMMITS.createNewFile();
                 BLOBS.createNewFile();
                 ADD.createNewFile();
                 REMOVE.createNewFile();
+                HEAD.createNewFile();
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -68,6 +70,7 @@ public class Driver {
             // get the first_commit id so we can update the head.
             String first_commit_code = first_commit.getCode();
             // update the head.
+//            Branch.setupPointer(HEAD, first_commit_code);
             if (!HEAD.exists()) {
                 try {
                     HEAD.createNewFile();
@@ -93,9 +96,9 @@ public class Driver {
      * 1) check if the file exists
      * 2) if not, add to staging area **/
 
-    public static void add(String name ) {
+    public static void add(String name) {
 
-        File fileobj = getFile(name);
+        File fileobj = join(CWD, name);
 
         if (!fileobj.exists()) {
             System.out.println("This file does not exist! ");
@@ -110,7 +113,21 @@ public class Driver {
         }
     }
 
-    public static void commit(){
+    public static void commit(String message){
+        StagingArea obj = StagingArea.fromFile();
+
+        Map<String, String> newTrackedMap = obj.commit();
+        // save the stagingArea since commit will change it
+        obj.save();
+        List<String> parents = new ArrayList<>();
+        Commit headCommit = getHEADCommit();
+
+         parents.add(headCommit.getCode());
+
+         Commit commit = new Commit(message, parents, newTrackedMap);
+         commit.save();
+         // set HEAD pointer
+        writeContents(HEAD, commit.getCode());
 
     }
     public static void status(){
@@ -120,7 +137,17 @@ public class Driver {
 
     }
 
-    public static void checkout() {
+    public static void checkout(String name) {
+        // look where head is pointing,
+        //check if that file exits in cwd
+        // if it does exist
+        // // check if contents different -> overwrite
+        //else return the same thing.
+        //if doesn't -> errors.
+        String filePath = getFile(name).getPath();
+        if (!getHEADCommit().restoreTrackedFile(filePath)) {
+            System.out.println("File does not exist in that commit.");
+        }
 
     }
 
@@ -141,8 +168,12 @@ public class Driver {
         if (Paths.get(name).isAbsolute()) {
             return new File(name);
         } else {
-            return Utils.join(CWD, name);
+            return join(CWD, name);
         }
+    }
+    public static Commit getHEADCommit() {
+        String head_code = readContentsAsString(HEAD);
+        return Commit.fromFile(head_code);
     }
 
 }

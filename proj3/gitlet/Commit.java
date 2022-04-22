@@ -17,13 +17,13 @@ public class Commit implements Serializable {
     String parent1;
     String parent2;
     String commit_message;
-    private HashMap<String, String> blob_tracker; // <fileName, SHA1>
+    private Map<String, String> blob_tracker; // <fileName, SHA1>
     private final List<String> parents;
     private final File commit_file;
 
 
     /** Constructor **/
-    Commit(String _commit_message,List<String> parents, HashMap<String, String> blob_tracker ) {
+    Commit(String _commit_message,List<String> parents, Map<String, String> blob_tracker ) {
 
         this.commit_message = _commit_message;
         this.parents = parents;
@@ -40,7 +40,7 @@ public class Commit implements Serializable {
         this.blob_tracker = new HashMap<>();
         this.date = new Date(0); // The timestamp for this initial commit will be 00:00:00 UTC, Thursday, 1 January 1970
         this.commit_code = getCode();
-        this.commit_file = Utils.join(Driver.COMMITS_FOLDER, this.commit_code);
+        this.commit_file = join(Driver.COMMITS_FOLDER, this.commit_code);
 
     }
     /** get the commit object from a particular commit's sha1 id */
@@ -67,6 +67,19 @@ public class Commit implements Serializable {
     }
 
     public void save() {
+
         Utils.writeObject(commit_file, this);
     }
+    public boolean restoreTrackedFile(String filePath) {
+        String blobId = blob_tracker.get(filePath);
+
+        if (blobId == null) {
+            return false;
+        }
+
+        Blob.fromFile(blobId).writeContentToSource();
+        return true;
+    }
+
+
 }

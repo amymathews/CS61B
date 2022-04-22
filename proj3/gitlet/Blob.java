@@ -50,6 +50,17 @@ public class Blob implements Serializable {
     public void save() {
 
     }
+    public static File getObjectFile(String id) {
+        String dirName = id.substring(0, 2);    // id first 2 digits as  dir name
+        String fileName = id.substring(2);
+        return join(Driver.BLOB_FOLDER, dirName, fileName);
+    }
+    public static Blob fromFile(String id) {
+        return Utils.readObject(getObjectFile(id), Blob.class);
+    }
+    public void writeContentToSource() {
+        Utils.writeContents(source, content);
+    }
 
 
 
