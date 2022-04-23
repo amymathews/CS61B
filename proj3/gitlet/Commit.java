@@ -23,7 +23,7 @@ public class Commit implements Serializable {
 
 
     /** Constructor **/
-    Commit(String _commit_message,List<String> parents, Map<String, String> blob_tracker ) {
+    public Commit(String _commit_message,List<String> parents, Map<String, String> blob_tracker ) {
 
         this.commit_message = _commit_message;
         this.parents = parents;
@@ -43,16 +43,10 @@ public class Commit implements Serializable {
         this.commit_file = join(Driver.COMMITS_FOLDER, this.commit_code);
 
     }
-    /** get the commit object from a particular commit's sha1 id */
-    public static Commit fromFile(String commit_id) {
-        File file = Utils.join(Driver.COMMITS_FOLDER, commit_id);
-        return Utils.readObject(file, Commit.class);
-    }
-
 
     /** Helper Functions**/
 
-    /** We generate the id using metadata required in each commit.
+    /** In Commit: We generate the id using metadata required in each commit.
      * Returns the SHA-1 hash of the concatenation of the strings **/
     public String getCode(){
 
@@ -60,25 +54,37 @@ public class Commit implements Serializable {
 
     }
 
+    /** get the commit object from a particular commit's sha1 id */
+    public static Commit fromFile(String commit_id) {
+        File file = join(Driver.COMMITS_FOLDER, commit_id);
+        return readObject(file, Commit.class);
+    }
+
+    /** return the parent **/
+    public  List<String> get_parent() {
+        return this.parents;
+    }
+
+    /** get the time stamp **/
     public String getTimestamp() {
-        // Thu Jan 1 00:00:00 1970 +0000
-        DateFormat dateFormat = new SimpleDateFormat("EEE MMM d HH:mm:ss yyyy Z", Locale.ENGLISH);
-        return dateFormat.format(date);
+        DateFormat complete_date = new SimpleDateFormat("EEE MMM d HH:mm:ss yyyy Z", Locale.ENGLISH);
+        return complete_date.format(date);
     }
 
     public void save() {
 
-        Utils.writeObject(commit_file, this);
+        writeObject(commit_file, this);
     }
-    public boolean restoreTrackedFile(String filePath) {
-        String blobId = blob_tracker.get(filePath);
 
-        if (blobId == null) {
-            return false;
+    public void restoreTracked() {
+        for (String blobId : blob_tracker.values()) {
+            Blob.fromFile(blobId).writeContentToSource();
         }
-
-        Blob.fromFile(blobId).writeContentToSource();
-        return true;
+    }
+    public String buildLog() {
+        String log;
+        log =  "\n" + "commit " + getCode() + "\n" + "Date: " + getTimestamp() + "\n" + commit_message + "\n";
+        return log;
     }
 
 

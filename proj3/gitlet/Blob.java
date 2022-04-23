@@ -3,7 +3,6 @@ package gitlet;
 import java.io.Serializable;
 import static gitlet.Utils.*;
 import java.io.File;
-import java.nio.file.Paths;
 
 
 public class Blob implements Serializable {
@@ -26,42 +25,46 @@ public class Blob implements Serializable {
         this.content = readContents(source);
         String filePath = source.getPath();
         this.source_code = sha1(filePath, this.content);
-        this.blob_file = getFile(this.source_code);
+        this.blob_file = getObjectFile(this.source_code);
     }
-
-
-
 
     /** Helper functions. **/
 
     public String getCode(){
+
         return source_code;
     }
 
     /** Given file name, return the full File Object */
-    public static File getFile(String name) {
-        if (Paths.get(name).isAbsolute()) {
-            return new File(name);
-        } else {
-            return Utils.join(Driver.CWD, name);
-        }
+    public File getFile(){
 
+        return blob_file;
     }
     public void save() {
+        saveObjectFile(blob_file, this);
+    }
+    /** here we are reading the lob from the **/
+    public static Blob fromFile(String id) {
 
+        return readObject(getObjectFile(id), Blob.class);
+    }
+    public void writeContentToSource() {
+
+        writeContents(source, content);
     }
     public static File getObjectFile(String id) {
         String dirName = id.substring(0, 2);    // id first 2 digits as  dir name
         String fileName = id.substring(2);
         return join(Driver.BLOB_FOLDER, dirName, fileName);
     }
-    public static Blob fromFile(String id) {
-        return Utils.readObject(getObjectFile(id), Blob.class);
-    }
-    public void writeContentToSource() {
-        Utils.writeContents(source, content);
-    }
 
+    public static void saveObjectFile(File file, Serializable object) {
+        File parent = file.getParentFile();
+        if (!parent.exists()) {
+            parent.mkdirs();
+        }
+        Utils.writeObject(file, object);
+    }
 
 
 }

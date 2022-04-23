@@ -32,17 +32,6 @@ public class Branch implements Serializable {
 
     }
 
-    public static void setupPointer(File file, String commitId) {
-        if (!file.exists()) {
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        Utils.writeContents(file, commitId);
-    }
-
     /** Helper Functions. **/
 
     public void save() {

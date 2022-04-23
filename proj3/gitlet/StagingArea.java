@@ -21,13 +21,12 @@ public class StagingArea implements Serializable {
         tracked_files = new HashMap<>();
     }
 
-    public boolean add(File file) {
+    public boolean add (File file) {
         // create the blob
         Blob blob = new Blob(file);
         String blobId = blob.getCode();
 
         String filePath = file.getPath();
-
         // check if it's already been tracked
         String trackedId = tracked_files.get(filePath);
 
@@ -45,8 +44,19 @@ public class StagingArea implements Serializable {
                 }
             }
         }
-        return false;
+        String prevId = potential_adds.put(filePath, blobId);
+        if (prevId != null && prevId.equals(blobId)) {
+            // added the same blob before
+            return false;
+        }
+        if (!blob.getFile().exists()) {
+            // redundant ?
+            blob.save();
+        }
+        return true;
+
     }
+
 
     /** add the files  **/
     public HashMap<String, String> commit() {
@@ -59,15 +69,14 @@ public class StagingArea implements Serializable {
 
     /** Helper Functions. **/
     public void save(){
+
         writeObject(Driver.STAGING_AREA, this);
     }
     /** read from file. **/
-//    public void read(){
-//        return readObject(Driver.STAGING_AREA,this);
-//    }
+
     public static StagingArea fromFile() {
 
-        return Utils.readObject(Driver.STAGING_AREA, StagingArea.class);
+        return readObject(Driver.STAGING_AREA, StagingArea.class);
     }
 
 

@@ -42,7 +42,6 @@ public class Driver {
     /** init method responsible for starting the version control system in the directory its in.
      * Kind of like the SetUp Persistance  for lab12  **/
     public static void init(){
-//        File gitlet = new File(".gitlet");
         if (GITLET_FOLDER.exists()) {
             System.out.println("A gitlet version-control system exists in this current directory.");
         }
@@ -55,10 +54,10 @@ public class Driver {
             POTENTIAL_REMOVE.mkdir();
             BRANCHES_FOLDER.mkdir();
             try {
-                COMMITS.createNewFile();
-                BLOBS.createNewFile();
-                ADD.createNewFile();
-                REMOVE.createNewFile();
+//                COMMITS.createNewFile();
+//                BLOBS.createNewFile();
+//                ADD.createNewFile();
+//                REMOVE.createNewFile();
                 HEAD.createNewFile();
 
             } catch (IOException e) {
@@ -78,11 +77,10 @@ public class Driver {
                     e.printStackTrace();
                 }
             }
-            Utils.writeContents(HEAD, first_commit_code);
+            writeContents(HEAD, first_commit_code);
             // save the commit to master.
             Branch master  = new Branch(first_commit);
             master.save();
-
             // we now need to create a staging area.
             StagingArea initial_staging_area = new StagingArea();
             initial_staging_area.save();
@@ -114,6 +112,7 @@ public class Driver {
     }
 
     public static void commit(String message){
+
         StagingArea obj = StagingArea.fromFile();
 
         Map<String, String> newTrackedMap = obj.commit();
@@ -130,47 +129,39 @@ public class Driver {
         writeContents(HEAD, commit.getCode());
 
     }
-    public static void status(){
+    public static void status() {
 
     }
-    public static void log(){
-
+    public static void log() {
+    StringBuilder log = new StringBuilder();
+     Commit current = getHEADCommit();
+     while(current != null) {
+         log.append("===").append(current.buildLog()).append("\n");
+         List<String> parents = current.get_parent();
+         if (parents.size() == 0) {
+             break;
+         }
+         String nextCommitId = parents.get(0);
+         Commit nextCommit = Commit.fromFile(nextCommitId);
+         current = nextCommit;
+     }
+        System.out.println(log);
     }
 
-    public static void checkout(String name) {
+    public static void checkout(String fileName) {
+//        This function returns the path of the given file object.
         // look where head is pointing,
-        //check if that file exits in cwd
-        // if it does exist
-        // // check if contents different -> overwrite
-        //else return the same thing.
-        //if doesn't -> errors.
-        String filePath = getFile(name).getPath();
-        if (!getHEADCommit().restoreTrackedFile(filePath)) {
-            System.out.println("File does not exist in that commit.");
-        }
-
+//        //check if that file exits in cwd
+//        // if it does exist
+//        // // check if contents different -> overwrite
+//        //else return the same thing.
+//        //if doesn't -> errors.
+         getHEADCommit().restoreTracked();
     }
-
-
-
 
 
     /** Helper Functions **/
 
-    public static String  getCode(File filename){
-        String filePath = filename.getPath();
-        byte[] contents = Utils.readContents(filename);
-        return sha1(filePath, contents);
-    }
-
-    /** Given file name, return the full File Object */
-    public static File getFile(String name) {
-        if (Paths.get(name).isAbsolute()) {
-            return new File(name);
-        } else {
-            return join(CWD, name);
-        }
-    }
     public static Commit getHEADCommit() {
         String head_code = readContentsAsString(HEAD);
         return Commit.fromFile(head_code);
