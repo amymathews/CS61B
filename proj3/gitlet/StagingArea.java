@@ -64,7 +64,7 @@ public class StagingArea implements Serializable {
         for (String filePath : potential_removes) {
             tracked_files.remove(filePath);
         }
-        return tracked_files;  // Why return the trackedMap?  Because when we commit, we need a new trackedMap
+        return tracked_files;  // need a new map every time we commit.
     }
 
     /** Helper Functions. **/
@@ -73,12 +73,10 @@ public class StagingArea implements Serializable {
         writeObject(Driver.STAGING_AREA, this);
     }
     /** read from file. **/
-
     public static StagingArea fromFile() {
 
         return readObject(Driver.STAGING_AREA, StagingArea.class);
     }
-
 
 }
 

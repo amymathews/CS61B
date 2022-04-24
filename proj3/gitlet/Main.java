@@ -2,7 +2,8 @@ package gitlet;
 import java.io.File;
 
 /** Driver class for Gitlet, the tiny stupid version-control system.
- *  @author
+ *  @author Amy Mathews
+ *  NOTE: actaully worked with a bunch of random people for different OHs and Labs, TAs really helped too.
  */
 public class Main {
 
@@ -26,7 +27,15 @@ public class Main {
                     Driver.status();
                     break;
                 case "checkout":
-                    Driver.checkout(args[1]);
+                    // case where
+                    if( args.length == 3) {
+                        Driver.checkout();
+                    }
+                    if( args.length == 4 ){
+//                        String fileName = args[3];
+                        String commitId = args[1];
+                        Driver.checkout(commitId);
+                    }
                     break;
                 case "log":
                     Driver.log();

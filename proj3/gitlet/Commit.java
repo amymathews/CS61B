@@ -22,7 +22,7 @@ public class Commit implements Serializable {
     private final File commit_file;
 
 
-    /** Constructor **/
+    /** General Constructor **/
     public Commit(String _commit_message,List<String> parents, Map<String, String> blob_tracker ) {
 
         this.commit_message = _commit_message;
@@ -38,7 +38,7 @@ public class Commit implements Serializable {
         this.commit_message = "initial commit";
         this.parents = new ArrayList<>();
         this.blob_tracker = new HashMap<>();
-        this.date = new Date(0); // The timestamp for this initial commit will be 00:00:00 UTC, Thursday, 1 January 1970
+        this.date = new Date(0);
         this.commit_code = getCode();
         this.commit_file = join(Driver.COMMITS_FOLDER, this.commit_code);
 

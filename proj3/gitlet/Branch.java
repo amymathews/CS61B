@@ -2,7 +2,6 @@ package gitlet;
 
 import java.io.Serializable;
 import java.io.File;
-import java.io.IOException;
 import static gitlet.Utils.*;
 
 

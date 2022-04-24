@@ -148,7 +148,7 @@ public class Driver {
         System.out.println(log);
     }
 
-    public static void checkout(String fileName) {
+    public static void checkout() {
 //        This function returns the path of the given file object.
         // look where head is pointing,
 //        //check if that file exits in cwd
@@ -158,6 +158,12 @@ public class Driver {
 //        //if doesn't -> errors.
          getHEADCommit().restoreTracked();
     }
+    public static void checkout(String commit_code){
+
+        String fullCommitId = getFullCommitId(commit_code);
+        Commit.fromFile(fullCommitId).restoreTracked();
+
+    }
 
 
     /** Helper Functions **/
@@ -166,5 +172,25 @@ public class Driver {
         String head_code = readContentsAsString(HEAD);
         return Commit.fromFile(head_code);
     }
+    private static String getFullCommitId(String shortId) {
+        String ID = "";
+        boolean flag = false;
+        /** NOTE: PlainFilenamesIn -> Returns a list of the names of all plain files in the directory DIR, in
+         *  lexicographic order as Java Strings.  Returns null if DIR does
+         *  not denote a directory. */
+        for (String commitId : plainFilenamesIn(COMMITS_FOLDER)) {
+            if (commitId.contains(shortId)) {
+                ID = commitId;
+                flag = true;
+            }
+        }
+
+        if (!flag) {
+            System.out.println("No such commit exists! ");
+
+        }
+        return ID;
+    }
+
 
 }
