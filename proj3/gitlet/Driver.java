@@ -2,7 +2,6 @@ package gitlet;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.*;
 import static gitlet.Utils.*;
 
@@ -36,14 +35,13 @@ public class Driver {
     public static final File HEAD = join(GITLET_FOLDER, "HEAD.txt");
     /** the .gitlet/branches folder. Holds all the branches. **/
     public static final File BRANCHES_FOLDER = join(GITLET_FOLDER, "branches");
-//    public static StagingArea stagingArea = STAGING_AREA.exists() ? StagingArea.fromFile() : new StagingArea();
 
 
     /** init method responsible for starting the version control system in the directory its in.
      * Kind of like the SetUp Persistance  for lab12  **/
-    public static void init(){
+    public static void init() throws IOException {
         if (GITLET_FOLDER.exists()) {
-            System.out.println("A gitlet version-control system exists in this current directory.");
+            System.out.println("A Gitlet version-control system already exists in the current directory.");
         }
         else {
             GITLET_FOLDER.mkdir();
@@ -132,6 +130,21 @@ public class Driver {
     public static void status() {
 
     }
+//    public static void remove(String name){
+//        File file = join(Driver.CWD, name);
+//        StagingArea obj = StagingArea.fromFile();
+//        restrictedDelete(file);
+//
+//        //
+//////        if (/** HAS BEEN CHANGED**/) {
+//////            obj.save();
+//////        }
+////        else {
+////            System.out.println("No");
+////        }
+//
+//
+//    }
     public static void log() {
     StringBuilder log = new StringBuilder();
      Commit current = getHEADCommit();
@@ -146,6 +159,14 @@ public class Driver {
          current = nextCommit;
      }
         System.out.println(log);
+    }
+    public static void global_log() {
+        StringBuilder globalLogBuilder = new StringBuilder();
+
+        List<String> allFileNames = plainFilenamesIn(Driver.COMMITS_FOLDER);
+
+
+
     }
 
     public static void checkout() {
@@ -164,7 +185,6 @@ public class Driver {
         Commit.fromFile(fullCommitId).restoreTracked();
 
     }
-
 
     /** Helper Functions **/
 
@@ -191,6 +211,5 @@ public class Driver {
         }
         return ID;
     }
-
 
 }
