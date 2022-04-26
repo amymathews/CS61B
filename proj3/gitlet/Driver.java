@@ -35,6 +35,8 @@ public class Driver {
     public static final File HEAD = join(GITLET_FOLDER, "HEAD.txt");
     /** the .gitlet/branches folder. Holds all the branches. **/
     public static final File BRANCHES_FOLDER = join(GITLET_FOLDER, "branches");
+    /** the .gitlet/currentbranch.txt. Just keeps track of the the current branch. **/
+    public static final File CURRENT_BRANCH = join(GITLET_FOLDER, "currentBranch.txt");
 
 
     /** init method responsible for starting the version control system in the directory its in.
@@ -57,6 +59,7 @@ public class Driver {
 //                ADD.createNewFile();
 //                REMOVE.createNewFile();
                 HEAD.createNewFile();
+                CURRENT_BRANCH.createNewFile();
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -79,6 +82,8 @@ public class Driver {
             // save the commit to master.
             Branch master  = new Branch(first_commit);
             master.save();
+            // we also need to save the current branch somewhere (for global logs)
+            master.saveCurrent();
             // we now need to create a staging area.
             StagingArea initial_staging_area = new StagingArea();
             initial_staging_area.save();
@@ -129,6 +134,7 @@ public class Driver {
     }
     public static void status() {
 
+
     }
 //    public static void remove(String name){
 //        File file = join(Driver.CWD, name);
@@ -146,7 +152,7 @@ public class Driver {
 //
 //    }
     public static void log() {
-    StringBuilder log = new StringBuilder();
+     StringBuilder log = new StringBuilder();
      Commit current = getHEADCommit();
      while(current != null) {
          log.append("===").append(current.buildLog()).append("\n");
@@ -161,11 +167,15 @@ public class Driver {
         System.out.println(log);
     }
     public static void global_log() {
-        StringBuilder globalLogBuilder = new StringBuilder();
+        StringBuilder globalLog = new StringBuilder();
 
         List<String> allFileNames = plainFilenamesIn(Driver.COMMITS_FOLDER);
+        for(String s: allFileNames){
+            Commit commit = Commit.fromFile(s);
+            globalLog.append("===").append(commit.buildLog()).append("\n");
+        }
 
-
+        System.out.println(globalLog);
 
     }
 

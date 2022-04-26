@@ -37,6 +37,12 @@ public class Branch implements Serializable {
         File file = join(Driver.BRANCHES_FOLDER, this.branch);
         writeObject(file, this);
     }
+    /** to remember the current branch we are on -> just write it into the branch file. **/
+    public void saveCurrent(){
+        writeContents(Driver.CURRENT_BRANCH, this.branch);
+
+    }
+
 
 
 
